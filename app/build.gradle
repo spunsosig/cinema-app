@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
 }
 
+// app/build.gradle
+//apply from: rootProject.file("gradle/config.gradle")
+
 android {
     namespace 'com.example.cinemaapp2'
     compileSdk 34
@@ -21,11 +24,19 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+//            buildConfigField "String", "TMDB_API_KEY", TMDB_API_KEY
+            buildConfigField "String", "TMDB_API_KEY", "${TMDB_API_KEY}"
+
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+//    buildConfigField "String", "TMDB_API_KEY", "\"${rootProject.ext.tmdbApiKey}\""
+
 }
 
 dependencies {
@@ -42,4 +53,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0' // For JSON serialization/deserialization
 
 }
+
+android.buildFeatures.buildConfig true
+
 
