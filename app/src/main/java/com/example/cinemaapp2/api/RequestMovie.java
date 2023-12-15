@@ -11,4 +11,8 @@ public interface RequestMovie {
 
     @GET("movie/popular")
     Call<MovieResponse> getPopularMovies(@Query("api_key") String apiKey);
+
+    Call<MovieResponse> getnowPlayingMovies(@Query("api_key") String apiKey);
 }
+
+

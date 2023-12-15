@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Movie {
     @SerializedName("id")
-
     private int id;
     private String title;
     private String overview;
+    @SerializedName("poster_path")
     private String posterPath;
     private String releaseDate;
     private double voteAverage;
@@ -35,6 +35,7 @@ public class Movie {
     public void setOverview(String overview) {
         this.overview = overview;
     }
+
 
     public String getPosterPath() {
         return posterPath;
