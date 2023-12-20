@@ -23,6 +23,7 @@
         app:layout_constraintVertical_bias="0.053" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/movieLayout"
         android:layout_width="362dp"
         android:layout_height="745dp"
         android:layout_marginStart="16dp"
@@ -31,15 +32,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.242"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" >
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
-        <ImageView
-            android:id="@+id/moviePoster"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="34dp"
-            tools:layout_editor_absoluteY="39dp"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+             />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
