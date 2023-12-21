@@ -1,5 +1,10 @@
 package com.example.cinemaapp2.models;
 
+import com.example.cinemaapp2.MovieDetailsActivity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +20,12 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
     private List<Movie> movies;
+    private Context context;
 
-    public MovieAdapter(List<Movie> movies) {
+
+    public MovieAdapter(List<Movie> movies, Context context) {
         this.movies = movies;
+        this.context = context;
     }
 
     @NonNull
@@ -33,11 +41,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         Movie movie = movies.get(position);
         String posterPath = movie.getPosterPath();
 
-        if (posterPath != null && !posterPath.isEmpty()){
+        if (movie != null) {
             Picasso.get().load("https://image.tmdb.org/t/p/w500" + posterPath).into(holder.movieImageView);
 
+            holder.movieImageView.setOnClickListener(view -> {
+                Log.d("ONCLICK", "Movie Clicked");
+                Log.d("MovieAdapter", "Context: " + context);
+
+                // Create an intent to start the MovieDetailsActivity
+                Intent intent = new Intent(context, MovieDetailsActivity.class);
+
+                // Pass data (for example, movie ID) to the MovieDetailsActivity
+                intent.putExtra("movieId", movie.getId());
+
+                // Start the activity
+                context.startActivity(intent);
+            });
         }
     }
+
 
     @Override
     public int getItemCount() {

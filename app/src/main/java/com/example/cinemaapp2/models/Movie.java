@@ -3,8 +3,8 @@ package com.example.cinemaapp2.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Movie {
-    @SerializedName("id")
-    private int id;
+    @SerializedName("external_id")
+    private int external_id;
     private String title;
     private String overview;
     @SerializedName("poster_path")
@@ -12,12 +12,16 @@ public class Movie {
     private String releaseDate;
     private double voteAverage;
 
+    public Movie(int id){
+        this.external_id = id;
+    }
+
     public int getId() {
-        return id;
+        return external_id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.external_id = id;
     }
 
     public String getTitle() {
@@ -60,4 +64,5 @@ public class Movie {
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
     }
+
 }
