@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cinemaapp2.BuildConfig;
 import com.example.cinemaapp2.R;
@@ -19,8 +21,13 @@ import com.example.cinemaapp2.api.ApiClient;
 import com.example.cinemaapp2.api.RequestMovie;
 import com.example.cinemaapp2.api.RequestTVShow;
 import com.example.cinemaapp2.databinding.FragmentSearchBinding;
+import com.example.cinemaapp2.models.Movie;
+import com.example.cinemaapp2.models.MovieAdapter;
 import com.example.cinemaapp2.models.MovieResponse;
 import com.example.cinemaapp2.ui.dashboard.DashboardViewModel;
+import com.example.cinemaapp2.ui.home.HomeFragment;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,10 +47,16 @@ public class SearchFragment extends Fragment {
         RequestMovie movieService = retrofit.create(RequestMovie.class);
         RequestTVShow TVService = retrofit.create(RequestTVShow.class);
 
+
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
 
+        RecyclerView recyclerView = root.findViewById(R.id.movieSearch);
+        GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
+        recyclerView.setLayoutManager(layoutManager);
+
+        TextView numOfResults = root.findViewById(R.id.resultsText);
         EditText searchbar = root.findViewById(R.id.search_bar);
         Button button = (Button) binding.button;
         button.setOnClickListener(new View.OnClickListener()
@@ -60,6 +73,21 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                         Log.d("API","API successfully connected");
+                        MovieResponse movieResponse = response.body();
+                        if (response.isSuccessful()){
+                            if(query != ""){
+                                numOfResults.setText(movieResponse.getTotalResults() + " Results for " + query);
+                                List<Movie> movies = movieResponse.getMovies();
+                                for(Movie movie: movies){
+                                    Log.d("Results", movie.getTitle());
+                                    MovieAdapter movieAdapter = new MovieAdapter(movies, SearchFragment.this.getContext());
+                                    recyclerView.setAdapter(movieAdapter);
+                                }
+
+                            }
+                        } else {
+                            Log.d("SEARCH","No results found for: " + query);
+                        }
                     }
 
                     @Override

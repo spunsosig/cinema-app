@@ -21,5 +21,19 @@ public class MovieResponse {
     public List<Movie> getMovies(){
         return movies;
     }
+
+    public int getPage() {
+        return page;
+    }
+
+    public int getTotalResults() {
+        return totalResults;
+    }
+
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
 }
 
