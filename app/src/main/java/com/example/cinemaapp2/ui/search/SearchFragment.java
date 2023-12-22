@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,6 +57,29 @@ public class SearchFragment extends Fragment {
         GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
+        Spinner genreView = root.findViewById(R.id.spinner);
+        Call<MovieResponse> genreCall = movieService.getMovieGenres("en" ,BuildConfig.TMDB_API_KEY);
+
+        genreCall.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> genreCall, Response<MovieResponse> response) {
+                MovieResponse movieResponse = response.body();
+
+                Log.d("API","API successfully connected");
+                if (response.isSuccessful()){
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> genreCall, Throwable t) {
+                Log.d("API","API failed to connect");
+
+            }
+        });
+
         TextView numOfResults = root.findViewById(R.id.resultsText);
         EditText searchbar = root.findViewById(R.id.search_bar);
         Button button = (Button) binding.button;
@@ -83,7 +107,6 @@ public class SearchFragment extends Fragment {
                                     MovieAdapter movieAdapter = new MovieAdapter(movies, SearchFragment.this.getContext());
                                     recyclerView.setAdapter(movieAdapter);
                                 }
-
                             }
                         } else {
                             Log.d("SEARCH","No results found for: " + query);

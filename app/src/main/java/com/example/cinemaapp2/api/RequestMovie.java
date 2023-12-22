@@ -25,6 +25,9 @@ public interface RequestMovie {
 
     @GET("search/movie")
     Call<MovieResponse> searchMovie(@Query("query") String query, @Query("api_key") String apiKey);
+
+    @GET("genre/movie/list")
+    Call<MovieResponse> getMovieGenres(@Query("language") String language,@Query("api_key") String apiKey);
 }
 
 

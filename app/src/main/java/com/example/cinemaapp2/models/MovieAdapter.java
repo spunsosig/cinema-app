@@ -44,19 +44,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         if (movie != null) {
             Picasso.get().load("https://image.tmdb.org/t/p/w500" + posterPath).into(holder.movieImageView);
 
-            holder.movieImageView.setOnClickListener(view -> {
-                Log.d("ONCLICK", "Movie Clicked");
-                Log.d("MovieAdapter", "Context: " + context);
-
-                // Create an intent to start the MovieDetailsActivity
-                Intent intent = new Intent(context, MovieDetailsActivity.class);
-
-                // Pass data (for example, movie ID) to the MovieDetailsActivity
-                intent.putExtra("movieId", movie.getId());
-
-                // Start the activity
-                context.startActivity(intent);
-            });
+//            holder.movieImageView.setOnClickListener(view -> {
+//                Log.d("ONCLICK", "Movie Clicked");
+//                Log.d("MovieAdapter", "Context: " + context);
+//
+//                // Create an intent to start the MovieDetailsActivity
+//                Intent intent = new Intent(context, MovieDetailsActivity.class);
+//
+//                // Pass data (for example, movie ID) to the MovieDetailsActivity
+//                intent.putExtra("movieId", movie.getId());
+//
+//                // Start the activity
+//                context.startActivity(intent);
+//            });
         }
     }
 
