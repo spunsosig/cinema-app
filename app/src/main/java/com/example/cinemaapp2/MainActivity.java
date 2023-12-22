@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -44,7 +46,7 @@ import retrofit2.Retrofit;
 import retrofit2.http.Query;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private ActivityMainBinding binding;
 
@@ -68,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
                 // Handle navigation to the notifications fragment
                 navigateToFragment(R.id.navigation_notifications);
                 return true;
+            } else if(item.getItemId() == R.id.navigation_search){
+                navigateToFragment(R.id.navigation_search);
+                return true;
             }
             return false;
         });
@@ -75,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications)
                 .build();
 
         // Find the NavController by locating the NavHostFragment
@@ -118,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
             Log.e("MainActivity", "NavHostFragment is null");
         }
     }
+
+
 
 
 }

@@ -20,6 +20,11 @@ public interface RequestMovie {
     @GET("movie/{movie_id}/external_ids")
     Call<Movie> getMovieById(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
 
+//    @GET("search/movie?query={query}")
+//    Call<MovieResponse> searchMovie(@Query("query") String query, @Query("api_key") String apiKey);
+
+    @GET("search/movie")
+    Call<MovieResponse> searchMovie(@Query("query") String query, @Query("api_key") String apiKey);
 }
 
 
