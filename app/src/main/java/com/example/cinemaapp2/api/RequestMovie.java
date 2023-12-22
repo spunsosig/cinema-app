@@ -1,7 +1,11 @@
 package com.example.cinemaapp2.api;
 
+import com.example.cinemaapp2.models.Genre;
+import com.example.cinemaapp2.models.GenreResponse;
 import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.MovieResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -27,7 +31,8 @@ public interface RequestMovie {
     Call<MovieResponse> searchMovie(@Query("query") String query, @Query("api_key") String apiKey);
 
     @GET("genre/movie/list")
-    Call<MovieResponse> getMovieGenres(@Query("language") String language,@Query("api_key") String apiKey);
+    Call<GenreResponse> getMovieGenres(@Query("language") String language, @Query("api_key") String apiKey);
+
 }
 
 

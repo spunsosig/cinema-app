@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -22,12 +23,15 @@ import com.example.cinemaapp2.api.ApiClient;
 import com.example.cinemaapp2.api.RequestMovie;
 import com.example.cinemaapp2.api.RequestTVShow;
 import com.example.cinemaapp2.databinding.FragmentSearchBinding;
+import com.example.cinemaapp2.models.Genre;
+import com.example.cinemaapp2.models.GenreResponse;
 import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.MovieAdapter;
 import com.example.cinemaapp2.models.MovieResponse;
 import com.example.cinemaapp2.ui.dashboard.DashboardViewModel;
 import com.example.cinemaapp2.ui.home.HomeFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -57,27 +61,38 @@ public class SearchFragment extends Fragment {
         GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
-        Spinner genreView = root.findViewById(R.id.spinner);
-        Call<MovieResponse> genreCall = movieService.getMovieGenres("en" ,BuildConfig.TMDB_API_KEY);
+        Call<GenreResponse> genreCall = movieService.getMovieGenres("en" ,BuildConfig.TMDB_API_KEY);
 
-        genreCall.enqueue(new Callback<MovieResponse>() {
+
+        genreCall.enqueue(new Callback<GenreResponse>() {
             @Override
-            public void onResponse(Call<MovieResponse> genreCall, Response<MovieResponse> response) {
-                MovieResponse movieResponse = response.body();
+            public void onResponse(Call<GenreResponse> call, Response<GenreResponse> response){
+                if(response.isSuccessful()){
+                    GenreResponse genreResponse = response.body();
+                    List<Genre> genres = genreResponse.getGenres();
+                    List<String> genreNames = new ArrayList<>();
 
-                Log.d("API","API successfully connected");
-                if (response.isSuccessful()){
+                    for(Genre genre: genres){
+                        genreNames.add(genre.getName());
+                        Log.d("GENRES", genre.getName());
+                    }
+                    Spinner genreView = root.findViewById(R.id.spinner);
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(SearchFragment.this.getContext(), android.R.layout.simple_spinner_item, genreNames);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
 
                 } else {
-
+                    Log.e("APIGENRE", "Error: " + response.errorBody());
                 }
+
             }
 
             @Override
-            public void onFailure(Call<MovieResponse> genreCall, Throwable t) {
-                Log.d("API","API failed to connect");
-
+            public void onFailure(Call<GenreResponse> call, Throwable t) {
+                Log.d("APIGENRE","API failed to connect", t);
             }
+
         });
 
         TextView numOfResults = root.findViewById(R.id.resultsText);
