@@ -195,8 +195,8 @@ public class SearchFragment extends Fragment {
                                                         Log.d("Target genre", String.valueOf(selectedGenreId));
                                                     }
                                                 }
+                                                numOfResults.setText(filteredMovies.size() + " Results for " + query);
                                                 MovieAdapter movieAdapter = new MovieAdapter(filteredMovies, SearchFragment.this.getContext());
-//                                                MovieAdapter movieAdapter = new MovieAdapter(allMovies, SearchFragment.this.getContext());
 
                                                 recyclerView.setAdapter(movieAdapter);
 

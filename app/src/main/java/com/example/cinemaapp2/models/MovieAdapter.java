@@ -43,6 +43,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         if (movie != null) {
             Picasso.get().load("https://image.tmdb.org/t/p/w500" + posterPath).into(holder.movieImageView);
+            Log.d("posterpath",posterPath);
 
 //            holder.movieImageView.setOnClickListener(view -> {
 //                Log.d("ONCLICK", "Movie Clicked");
