@@ -28,11 +28,28 @@ public interface RequestMovie {
 //    Call<MovieResponse> searchMovie(@Query("query") String query, @Query("api_key") String apiKey);
 
     @GET("search/movie")
-    Call<MovieResponse> searchMovie(@Query("query") String query, @Query("api_key") String apiKey);
+    Call<MovieResponse> searchMovie(
+            @Query("query") String query,
+            @Query("api_key") String apiKey,
+            @Query("append_to_response") String appendToResponse
+    );
 
     @GET("genre/movie/list")
     Call<GenreResponse> getMovieGenres(@Query("language") String language, @Query("api_key") String apiKey);
 
+    @GET("discover/movie")
+    Call<MovieResponse> getFilteredMovies(
+            @Query("language") String language,
+            @Query("with_genre") String genre,
+            @Query("page") int page,
+            @Query("api_key") String apiKey,
+            @Query("keyword") String appendToResponse
+    );
+
+    //     --url 'https://api.themoviedb.org/3/discover/movie?with_genres=action' \
+
+    @GET("discover/movie")
+    Call<MovieResponse> getMoviesWithGenre(@Query("with_genre") String genre, @Query("api_key") String apiKey);
 }
 
 

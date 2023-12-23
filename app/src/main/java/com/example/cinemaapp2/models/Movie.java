@@ -11,9 +11,20 @@ public class Movie {
     private String posterPath;
     private String releaseDate;
     private double voteAverage;
+    @SerializedName("genre_ids")
+    private int[] genre_ids;
 
-    public Movie(int id){
+    public int getExternal_id() {
+        return external_id;
+    }
+
+    public int[] getGenre() {
+        return genre_ids;
+    }
+
+    public Movie(int id, int[] genreIds){
         this.external_id = id;
+        genre_ids = genreIds;
     }
 
     public int getId() {
