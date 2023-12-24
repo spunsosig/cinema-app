@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.MovieAdapter;
 import com.example.cinemaapp2.models.MovieResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,12 +37,14 @@ import retrofit2.Retrofit;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    List<Movie> popularMovies = new ArrayList<Movie>();
+    List<Movie> upcomingMovies = new ArrayList<Movie>();
+    List<Movie> nowPlayingMovies = new ArrayList<Movie>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
-
         Retrofit retrofit = ApiClient.getClient();
         RequestMovie movieService = retrofit.create(RequestMovie.class);
         RequestTVShow TVService = retrofit.create(RequestTVShow.class);
@@ -49,38 +53,119 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
+        Button btnPopular = root.findViewById(R.id.btnPopular);
+        Button btnNowplaying = root.findViewById(R.id.btnNowPlaying);
+        Button btnUpcoming = root.findViewById(R.id.btnUpcoming);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
-        //        Call<MovieResponse> call =  movieService.getNowPlayingMovies(BuildConfig.TMDB_API_KEY);
-        //        Call<MovieResponse> call =  TVService.getPopularTV(BuildConfig.TMDB_API_KEY);
-        Call<MovieResponse> call = movieService.getPopularMovies(BuildConfig.TMDB_API_KEY);
-
-        call.enqueue(new Callback<MovieResponse>() {
+        Call<MovieResponse> nowPlayingCall =  movieService.getNowPlayingMovies(BuildConfig.TMDB_API_KEY);
+        nowPlayingCall.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful()){
                     MovieResponse movieResponse = response.body();
 
-                    if (movieResponse != null && movieResponse.getMovies() != null) {
-                        List<Movie> movies = movieResponse.getMovies();
-
-                        MovieAdapter movieAdapter = new MovieAdapter(movies,HomeFragment.this.getContext());
-                        recyclerView.setAdapter(movieAdapter);
+                    if (movieResponse != null && movieResponse.getMovies() != null){
+                        nowPlayingMovies = movieResponse.getMovies();
+                        Log.d("Now Playing: ", nowPlayingMovies.toString());
                     } else {
                         Log.d("MOVIES", "Error: null or empty movie list");
+
                     }
-
                 } else {
-                    Log.d("MOVIES", "Error: null or empty movie list");
+                    Log.d("API", "Connection unsuccessful");
                 }
-
             }
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
-                Log.d("MOVIES", "could not load movies");
+                Log.d("API", "Failed to connect");
+            }
+        });
+
+
+        Call<MovieResponse> popularCall = movieService.getPopularMovies(BuildConfig.TMDB_API_KEY);
+        popularCall.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                if (response.isSuccessful()){
+                    MovieResponse movieResponse = response.body();
+
+                    if (movieResponse != null && movieResponse.getMovies() != null){
+                        popularMovies = movieResponse.getMovies();
+                        Log.d("Popular Movies", popularMovies.toString());
+
+                        MovieAdapter movieAdapter = new MovieAdapter(popularMovies,HomeFragment.this.getContext());
+                        recyclerView.setAdapter(movieAdapter);
+                    } else {
+                        Log.d("MOVIES", "Error: null or empty movie list");
+                    }
+                } else {
+                    Log.d("API", "Connection unsuccessful");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                Log.d("API", "Failed to connect");
+            }
+        });
+
+
+
+        Call<MovieResponse> upComingCall = movieService.getUpComingMovies(BuildConfig.TMDB_API_KEY);
+        upComingCall.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                if (response.isSuccessful()) {
+                    MovieResponse movieResponse = response.body();
+                    Log.d("Upcoming Movies call", "movie response successful");
+
+                    if (movieResponse != null && movieResponse.getMovies() != null){
+                        upcomingMovies = movieResponse.getMovies();
+                        Log.d("Upcoming movies", String.valueOf(upcomingMovies.get(6).getId()));
+
+                        MovieAdapter movieAdapter = new MovieAdapter(upcomingMovies,HomeFragment.this.getContext());
+                        recyclerView.setAdapter(movieAdapter);
+                    } else {
+                        Log.d("UPCOMING MOVIES", "Error: null or empty movie list");
+                    }
+                } else {
+                    Log.d("API", "Upcoming Connection unsuccessful");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                Log.d("API", "Failed to connect", t);
+            }
+        });
+
+
+
+        btnUpcoming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MovieAdapter movieAdapter = new MovieAdapter(upcomingMovies,HomeFragment.this.getContext());
+                recyclerView.setAdapter(movieAdapter);
+            }
+        });
+
+        btnNowplaying.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MovieAdapter movieAdapter = new MovieAdapter(nowPlayingMovies,HomeFragment.this.getContext());
+                recyclerView.setAdapter(movieAdapter);
+            }
+        });
+
+        btnPopular.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MovieAdapter movieAdapter = new MovieAdapter(popularMovies,HomeFragment.this.getContext());
+                recyclerView.setAdapter(movieAdapter);
             }
         });
 

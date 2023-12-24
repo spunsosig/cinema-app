@@ -18,6 +18,9 @@ public interface RequestMovie {
     @GET("movie/popular")
     Call<MovieResponse> getPopularMovies(@Query("api_key") String apiKey);
 
+    @GET("movie/upcoming")
+    Call<MovieResponse> getUpComingMovies(@Query("api_key") String apiKey);
+
     @GET("movie/now_playing")
     Call<MovieResponse> getNowPlayingMovies(@Query("api_key") String apiKey);
 
@@ -26,6 +29,7 @@ public interface RequestMovie {
 
 //    @GET("search/movie?query={query}")
 //    Call<MovieResponse> searchMovie(@Query("query") String query, @Query("api_key") String apiKey);
+
 
     @GET("search/movie")
     Call<MovieResponse> searchMovie(
