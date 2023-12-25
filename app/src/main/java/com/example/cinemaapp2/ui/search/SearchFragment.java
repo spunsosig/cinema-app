@@ -46,6 +46,8 @@ public class SearchFragment extends Fragment {
     private List<Genre> genres;
     private FragmentSearchBinding binding;
     int selectedGenreId = 0;
+    String selectedGenreName = "All";
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -63,24 +65,24 @@ public class SearchFragment extends Fragment {
         List<Movie> searchResults = new ArrayList<Movie>();
 
         //Movie Filters
-        String selectedGenreName = "action";
         Genre selectedGenre = new Genre();
 
         RecyclerView recyclerView = root.findViewById(R.id.movieSearch);
         GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
-        Call<GenreResponse> genreCall = movieService.getMovieGenres("en" ,BuildConfig.TMDB_API_KEY);
+        Call<GenreResponse> genreCall = movieService.getMovieGenres("en", BuildConfig.TMDB_API_KEY);
 
 
         genreCall.enqueue(new Callback<GenreResponse>() {
             @Override
-            public void onResponse(Call<GenreResponse> call, Response<GenreResponse> response){
-                if(response.isSuccessful()){
+            public void onResponse(Call<GenreResponse> call, Response<GenreResponse> response) {
+                if (response.isSuccessful()) {
                     GenreResponse genreResponse = response.body();
                     genres = genreResponse.getGenres();
                     List<String> genreNames = new ArrayList<>();
+                    genreNames.add("All");
 
-                    for(Genre genre: genres){
+                    for (Genre genre : genres) {
                         genreNames.add(genre.getName());
                         Log.d("GENRES", genre.getName());
                     }
@@ -94,39 +96,28 @@ public class SearchFragment extends Fragment {
                         @Override
                         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                             // Handle the item selection here
-                            Genre selectedGenre = genres.get(position);
-                            String selectedGenreName = selectedGenre.getName();
-                            selectedGenreId = selectedGenre.getId();
+                            selectedGenreName = genreView.getSelectedItem().toString();
+                            if (!selectedGenreName.equals("All")) {
+                                Genre selectedGenre = genres.get(position - 1);
+                                selectedGenreName = selectedGenre.getName();
 
-                            Log.d("SELECTED_GENRE", String.valueOf(selectedGenreId));
+                                selectedGenreId = selectedGenre.getId();
 
-                            Log.d("SELECTED_GENRE", selectedGenreName);
+                                Log.d("SELECTED_GENRE", String.valueOf(selectedGenreId));
 
-                            Call<MovieResponse> call = movieService.getMoviesWithGenre(selectedGenre.getName(),BuildConfig.TMDB_API_KEY);
-                            call.enqueue(new Callback<MovieResponse>() {
-                                @Override
-                                public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                                    MovieResponse movieResponse = response.body();
-                                    if(movieResponse != null){
-                                        List<Movie> movies = movieResponse.getMovies();
-                                        for (Movie movie : movies) {
-                                            Log.d("Results", movie.getTitle());
-                                        }
-                                    } else {
-                                        Log.d("Results", "Response is null");
-                                    }
-                                }
+                                Log.d("SELECTED_GENRE", selectedGenreName);
 
-                                @Override
-                                public void onFailure(Call<MovieResponse> call, Throwable t) {
-                                    Log.d("GENRECALL", "Error getting response");
-                                }
-                            });
+                            } else {
+                                Log.d("SELECTED_GENRE", selectedGenreName);
+                            }
+
                         }
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parentView) {
-                            // Do nothing here, or add any default behavior if needed
+                            selectedGenreName = "All";
+                            Log.d("SELECTED_GENRE2", selectedGenreName);
+
                         }
                     });
 
@@ -138,7 +129,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GenreResponse> call, Throwable t) {
-                Log.d("APIGENRE","API failed to connect", t);
+                Log.d("APIGENRE", "API failed to connect", t);
             }
 
         });
@@ -148,78 +139,81 @@ public class SearchFragment extends Fragment {
         Button button = (Button) binding.button;
         String language = "en";
         int page = 1;
-        button.setOnClickListener(new View.OnClickListener()
-        {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 String query = searchbar.getText().toString();
                 String appendToResponse = "";
                 Log.d("SUBMIT", query);
 
-                Call<MovieResponse> searchCall = movieService.searchMovie(query ,BuildConfig.TMDB_API_KEY, appendToResponse);
+                Call<MovieResponse> searchCall = movieService.searchMovie(query, BuildConfig.TMDB_API_KEY, appendToResponse);
                 searchCall.enqueue(new Callback<MovieResponse>() {
                     @Override
                     public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                        Log.d("API","API successfully connected");
-                        if (response.isSuccessful()){
+                        Log.d("API", "API successfully connected");
+                        if (response.isSuccessful()) {
                             MovieResponse searchResponse = response.body();
 
-                            if (searchResponse != null && !searchResponse.getMovies().isEmpty()){
+                            if (searchResponse != null && !searchResponse.getMovies().isEmpty()) {
                                 List<Movie> searchResults = searchResponse.getMovies();
 
-                                for (Movie movie: searchResults){
-                                    Log.d("Results", movie.getTitle());
+                                Log.d("SELECTED_GENRE3", selectedGenreName);
+                                if (selectedGenreName != "All") {
+                                    Call<MovieResponse> filterCall = movieService.getFilteredMovies(language, selectedGenreName, page, BuildConfig.TMDB_API_KEY, query);
+
+                                    filterCall.enqueue(new Callback<MovieResponse>() {
+                                        @Override
+                                        public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                                            if (response.isSuccessful()) {
+                                                MovieResponse movieResponse = response.body();
+
+                                                if (movieResponse != null) {
+                                                    List<Movie> allMovies = movieResponse.getMovies();
+                                                    List<Movie> filteredMovies = new ArrayList<Movie>();
+                                                    for (Movie movie : searchResults) {
+                                                        int[] genreIds = movie.getGenre();
+                                                        for (int genreId : genreIds) {
+                                                            if (genreId == selectedGenreId) {
+                                                                filteredMovies.add(movie);
+
+                                                            }
+                                                            Log.d("Movie genre", String.valueOf(genreId));
+                                                            Log.d("Target genre", String.valueOf(selectedGenreId));
+                                                        }
+                                                    }
+                                                    numOfResults.setText(filteredMovies.size() + " Results for " + query);
+                                                    MovieAdapter movieAdapter = new MovieAdapter(filteredMovies, SearchFragment.this.getContext());
+
+                                                    recyclerView.setAdapter(movieAdapter);
+
+                                                }
+                                                Log.d("Response", "No response");
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<MovieResponse> call, Throwable t) {
+                                            Log.d("error", "Failed to connect");
+                                        }
+                                    });
+                                } else {
+                                    Log.d("Results", "Showing all movies");
+                                    numOfResults.setText(searchResults.size() + " Results for " + query);
+                                    MovieAdapter movieAdapter = new MovieAdapter(searchResults, SearchFragment.this.getContext());
+
+                                    recyclerView.setAdapter(movieAdapter);
                                 }
 
-                                Call<MovieResponse> filterCall = movieService.getFilteredMovies(language ,selectedGenreName, page ,BuildConfig.TMDB_API_KEY, query);
-
-                                filterCall.enqueue(new Callback<MovieResponse>() {
-                                    @Override
-                                    public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                                        if (response.isSuccessful()){
-                                            MovieResponse movieResponse = response.body();
-
-                                            if (movieResponse != null){
-                                                List<Movie> allMovies = movieResponse.getMovies();
-                                                List<Movie> filteredMovies = new ArrayList<Movie>();
-
-                                                for(Movie movie: searchResults){
-                                                    int[] genreIds = movie.getGenre();
-                                                    for (int genreId: genreIds){
-                                                        if (genreId == selectedGenreId){
-                                                            filteredMovies.add(movie);
-
-                                                        }
-                                                        Log.d("Movie genre", String.valueOf(genreId));
-                                                        Log.d("Target genre", String.valueOf(selectedGenreId));
-                                                    }
-                                                }
-                                                numOfResults.setText(filteredMovies.size() + " Results for " + query);
-                                                MovieAdapter movieAdapter = new MovieAdapter(filteredMovies, SearchFragment.this.getContext());
-
-                                                recyclerView.setAdapter(movieAdapter);
-
-                                            }
-                                            Log.d("Response", "No response");
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<MovieResponse> call, Throwable t) {
-                                        Log.d("error","Failed to connect");
-                                    }
-                                });
                             }
                         } else {
-                            Log.d("SEARCH","Response not successful  " + response.errorBody().toString());
+                            Log.d("SEARCH", "Response not successful  " + response.errorBody().toString());
                             numOfResults.setText("No results found for " + query);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<MovieResponse> call, Throwable t) {
-                        Log.d("API","API failed to connect");
+                        Log.d("API", "API failed to connect");
 
                     }
                 });

@@ -32,18 +32,21 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <Button
+            style="@style/button"
             android:id="@+id/btnPopular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Popular" />
 
         <Button
+            style="@style/button"
             android:id="@+id/btnNowPlaying"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Now playing" />
 
         <Button
+            style="@style/button"
             android:id="@+id/btnUpcoming"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

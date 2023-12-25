@@ -21,6 +21,7 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
     private List<Movie> movies;
     private Context context;
+    private int movieId = 0;
 
 
     public MovieAdapter(List<Movie> movies, Context context) {
@@ -41,23 +42,27 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         Movie movie = movies.get(position);
         String posterPath = movie.getPosterPath();
 
-        if (movie != null) {
+        if (movie != null && posterPath != null) {
             Picasso.get().load("https://image.tmdb.org/t/p/w500" + posterPath).into(holder.movieImageView);
             Log.d("posterpath",posterPath);
+            movieId = movie.getId();
+            Log.d("MovieIds", String.valueOf(movieId));
 
-//            holder.movieImageView.setOnClickListener(view -> {
-//                Log.d("ONCLICK", "Movie Clicked");
-//                Log.d("MovieAdapter", "Context: " + context);
-//
-//                // Create an intent to start the MovieDetailsActivity
-//                Intent intent = new Intent(context, MovieDetailsActivity.class);
-//
-//                // Pass data (for example, movie ID) to the MovieDetailsActivity
-//                intent.putExtra("movieId", movie.getId());
-//
-//                // Start the activity
-//                context.startActivity(intent);
-//            });
+            holder.movieImageView.setOnClickListener(view -> {
+                Log.d("ONCLICK", "Movie Clicked");
+                Log.d("MovieAdapter", "Context: " + context);
+                movieId = movie.getId();
+                Log.d("MovieIds", String.valueOf(movieId + " " + movie.getTitle()));
+
+                // Create an intent to start the MovieDetailsActivity
+                Intent intent = new Intent(context, MovieDetailsActivity.class);
+
+                // Pass data (for example, movie ID) to the MovieDetailsActivity
+                intent.putExtra("movieId", movieId);
+
+                // Start the activity
+                context.startActivity(intent);
+            });
         }
     }
 

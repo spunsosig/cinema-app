@@ -9,7 +9,6 @@
     tools:layout_editor_absoluteX="-12dp"
     tools:layout_editor_absoluteY="0dp">
 
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"

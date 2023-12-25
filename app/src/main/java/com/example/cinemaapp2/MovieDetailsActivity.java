@@ -14,6 +14,7 @@ import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.MovieAdapter;
 import com.example.cinemaapp2.models.MovieResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,6 +36,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         if (movieId != -1) {
             // Fetch detailed information about the movie using the movieId
             fetchMovieDetails(movieId);
+            Log.d("MOVIE Details ID", String.valueOf(movieId));
+
         } else {
             Log.d("MOVIES", "No movie ID provided");
         }
@@ -59,8 +62,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    // Log error details
                     Log.e("MovieDetailsActivity", "Api response not successful");
                     Log.d("MovieDetailsActivity", "ID: " + movieId);
+                    Log.d("MovieDetailsActivity", "Response code: " + response.code());
+                    try {
+                        Log.d("MovieDetailsActivity", "Error body: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

@@ -24,12 +24,14 @@ public interface RequestMovie {
     @GET("movie/now_playing")
     Call<MovieResponse> getNowPlayingMovies(@Query("api_key") String apiKey);
 
-    @GET("movie/{movie_id}/external_ids")
-    Call<Movie> getMovieById(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
+//    @GET("movie/{movie_id}/external_ids")
+//    Call<Movie> getMovieById(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
 
 //    @GET("search/movie?query={query}")
 //    Call<MovieResponse> searchMovie(@Query("query") String query, @Query("api_key") String apiKey);
 
+    @GET("movie/{id}")
+    Call<Movie> getMovieById(@Path("id") int id, @Query("api_key") String apiKey);
 
     @GET("search/movie")
     Call<MovieResponse> searchMovie(
