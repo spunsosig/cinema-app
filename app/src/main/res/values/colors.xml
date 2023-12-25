@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#666666</color>
     <color name="blue">#211366</color>
+
+    <color name="buttonNormalColor">#666666</color>
+    <color name="buttonPressedColor"></color>
 </resources>

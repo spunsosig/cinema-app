@@ -9,13 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cinemaapp2.api.ApiClient;
 import com.example.cinemaapp2.api.RequestMovie;
-import com.example.cinemaapp2.api.RequestTVShow;
 import com.example.cinemaapp2.models.Movie;
-import com.example.cinemaapp2.models.MovieAdapter;
-import com.example.cinemaapp2.models.MovieResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,7 +80,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private void updateUI(Movie movie) {
         // Update your UI components with the details of the fetched movie
-        TextView titleTextView = findViewById(R.id.titleTextView);
+        TextView titleTextView = findViewById(R.id.textTitle);
         titleTextView.setText("Movie Title: " + movie.getTitle());
 
         // Update other UI components as needed

@@ -150,6 +150,8 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 MovieAdapter movieAdapter = new MovieAdapter(upcomingMovies,HomeFragment.this.getContext());
                 recyclerView.setAdapter(movieAdapter);
+
+                btnUpcoming.setPressed(true);
             }
         });
 
