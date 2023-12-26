@@ -33,4 +33,9 @@
         android:name="com.example.cinemaapp2.ui.search.SearchFragment"
         android:label="Search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.example.cinemaapp2.ui.MovieDetails.MovieDetailsFragment"
+        android:label="fragment_movie_details"
+        tools:layout="@layout/fragment_movie_details" />
 </navigation>

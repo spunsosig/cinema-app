@@ -6,10 +6,13 @@ public class Movie {
     @SerializedName("id")
     private int id;
     private String title;
+    @SerializedName("overview")
     private String overview;
     @SerializedName("poster_path")
     private String posterPath;
+    @SerializedName("release_date")
     private String releaseDate;
+    @SerializedName("vote_average")
     private double voteAverage;
     @SerializedName("genre_ids")
     private int[] genre_ids;

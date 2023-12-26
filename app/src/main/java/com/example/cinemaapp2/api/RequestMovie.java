@@ -4,6 +4,7 @@ import com.example.cinemaapp2.models.Genre;
 import com.example.cinemaapp2.models.GenreResponse;
 import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.MovieResponse;
+import com.example.cinemaapp2.models.PersonResponse;
 
 import java.util.List;
 
@@ -56,6 +57,9 @@ public interface RequestMovie {
 
     @GET("discover/movie")
     Call<MovieResponse> getMoviesWithGenre(@Query("with_genre") String genre, @Query("api_key") String apiKey);
+
+    @GET("movie/{movie_id}/credits")
+    Call<PersonResponse> getCast(@Path("movie_id") int movie_id, @Query("api_key") String apiKey);
 }
 
 
