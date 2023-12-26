@@ -15,6 +15,7 @@ import com.example.cinemaapp2.models.Genre;
 import com.example.cinemaapp2.models.GenreResponse;
 import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.Person;
+import com.example.cinemaapp2.models.PersonResponse;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -30,11 +31,11 @@ import retrofit2.Retrofit;
 public class MovieDetailsActivity extends AppCompatActivity {
     Retrofit retrofit = ApiClient.getClient();
     RequestMovie movieService = retrofit.create(RequestMovie.class);
-    RequestTVShow TVService = retrofit.create(RequestTVShow.class);
     List<Genre> allGenres = new ArrayList<>();
     List<Genre> movieGenres = new ArrayList<>();
+    int[] movieGenreIds;
     Movie movie;
-    Person person;
+    List<Person> cast = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,12 +69,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     movie = response.body();
 
                     if (movie != null) {
-                        if (movieGenres == null || movieGenres.isEmpty()) {
-                            updateUI(movie);
-                        }
+                        updateUI(movie);
+
                     } else {
                         Log.e("MovieDetailsActivity", "No movie with this ID");
-                        updateUI(movie);
                     }
 
                 } else {
@@ -100,7 +99,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private void updateUI(Movie movie) {
         // Update your UI components with the details of the fetched movie
 
-
         TextView titleTextView = findViewById(R.id.textTitle);
         titleTextView.setText(movie.getTitle());
 
@@ -116,12 +114,26 @@ public class MovieDetailsActivity extends AppCompatActivity {
         TextView genreView = findViewById(R.id.textGenres);
 
         genreView.setText("");
-        allGenres = getGenres();
+        movieGenreIds = movie.getGenre();
 
-        int[] movieGenreIds = movie.getGenre();
+        Call<GenreResponse> genreCall = movieService.getMovieGenres("en", BuildConfig.TMDB_API_KEY);
 
-        if (movieGenreIds != null){
-            for (int genreId: movieGenreIds){
+        genreCall.enqueue(new Callback<GenreResponse>() {
+            @Override
+            public void onResponse(Call<GenreResponse> call, Response<GenreResponse> response) {
+                GenreResponse genreResponse = response.body();
+                allGenres = genreResponse.getGenres();
+                Log.d("MOVIEDETAILSACTIVITY", "GENRES" + allGenres.toString());
+            }
+
+            @Override
+            public void onFailure(Call<GenreResponse> call, Throwable t) {
+                Log.d("API", "failed to connect!", t);
+            }
+        });
+
+        if (movieGenreIds != null) {
+            for (int genreId : movieGenreIds) {
                 Genre genre = Genre.getGenreById(genreId, allGenres);
                 genreView.append(" " + genre.getName());
             }
@@ -133,27 +145,53 @@ public class MovieDetailsActivity extends AppCompatActivity {
         TextView overview = findViewById(R.id.textDescription);
         overview.setText(movie.getOverview());
 
-    }
-
-
-    public List<Genre> getGenres() {
-        Call<GenreResponse> genreCall = movieService.getMovieGenres("en", BuildConfig.TMDB_API_KEY);
-
-        genreCall.enqueue(new Callback<GenreResponse>() {
+        Call<PersonResponse> personResponseCall = movieService.getCast(movie.getId(), BuildConfig.TMDB_API_KEY);
+        personResponseCall.enqueue(new Callback<PersonResponse>() {
             @Override
-            public void onResponse(Call<GenreResponse> call, Response<GenreResponse> response) {
-                GenreResponse genreResponse = response.body();
-                allGenres = genreResponse.getGenres();
+            public void onResponse(Call<PersonResponse> call, Response<PersonResponse> response) {
+                PersonResponse personResponse = response.body();
+                cast = personResponse.getCast();
+                Log.d("MOVIEDETAILSACTIVITY", "ACTORS" + cast.toString());
 
-                updateUI(movie);
+//                if (cast != null) {
+//                    for (Person person : cast) {
+//                        Log.d("Actor", person.getName());
+//                    }
+//                } else {
+//                    Log.d("MOVIEDETAILSACTIVITY", "ACTOR LIST NULL");
+//                }
+
+
+                TextView actorName1 = findViewById(R.id.actorName1);
+                actorName1.setText(cast.get(0).getName());
+                TextView actorName2 = findViewById(R.id.actorName2);
+                actorName2.setText(cast.get(1).getName());
+                TextView actorName3 = findViewById(R.id.actorName3);
+                actorName3.setText(cast.get(2).getName());
+                TextView actorName4 = findViewById(R.id.actorName4);
+                actorName4.setText(cast.get(3).getName());
+
+                ImageView actorImage1 = findViewById(R.id.actorImage1);
+                Picasso.get().load("https://image.tmdb.org/t/p/w500" + cast.get(0).getProfile_path()).into(actorImage1);
+                ImageView actorImage2 = findViewById(R.id.actorImage2);
+                Picasso.get().load("https://image.tmdb.org/t/p/w500" + cast.get(1).getProfile_path()).into(actorImage2);
+                ImageView actorImage3 = findViewById(R.id.actorImage3);
+                Picasso.get().load("https://image.tmdb.org/t/p/w500" + cast.get(2).getProfile_path()).into(actorImage3);
+                ImageView actorImage4 = findViewById(R.id.actorImage4);
+                Picasso.get().load("https://image.tmdb.org/t/p/w500" + cast.get(3).getProfile_path()).into(actorImage4);
+
+
             }
 
             @Override
-            public void onFailure(Call<GenreResponse> call, Throwable t) {
-                Log.d("API", "failed to connect!", t);
+            public void onFailure(Call<PersonResponse> call, Throwable t) {
+                Log.d("MOVIEDETAILSACTIVITY", "Could not retrieve cast");
             }
         });
 
-        return allGenres;
+
+
     }
+
+
 }
