@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.CinemaApp2" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.CinemaApp2" parent="Theme.AppCompat.DayNight.DarkActionBar">
+
         <!-- Customize your dark theme here. -->
          <item name="colorPrimary">#183D3D</item>
         <item name ="colorSecondary">#040D12</item>
@@ -12,4 +13,6 @@
         <item name="android:textColor">@color/white</item>
 
     </style>
+
+    
 </resources>

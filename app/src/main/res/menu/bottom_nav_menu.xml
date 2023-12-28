@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
+    app:itemIconTint="@drawable/bottom_navigation_selector"
+    app:itemTextColor="@drawable/bottom_navigation_selector"
+
     >
     <item
         android:id="@+id/navigation_home"
+        android:actionLayout="@layout/fragment_home"
         android:icon="@drawable/ic_home_black_24dp"
-        tools:layout="@layout/fragment_home"
         android:title="Home"
-        />
+        tools:layout="@layout/fragment_home" />
 
     <item
         android:id="@+id/navigation_search"
+        android:actionLayout="@layout/fragment_search"
         android:icon="@drawable/ic_search_24dp"
-        tools:layout="@layout/fragment_search"
         android:title="Search"
-        />
+        tools:layout="@layout/fragment_search" />
 
     <item
         android:id="@+id/navigation_notifications"
+        android:actionLayout="@layout/fragment_search"
         android:icon="@drawable/ic_notifications_black_24dp"
-        tools:layout="@layout/fragment_notifications"
         android:title="Notifications"
 
-        />
+        tools:layout="@layout/fragment_notifications" />
 
 </menu>

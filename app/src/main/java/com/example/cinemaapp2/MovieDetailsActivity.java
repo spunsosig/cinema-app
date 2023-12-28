@@ -7,15 +7,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.cinemaapp2.api.ApiClient;
 import com.example.cinemaapp2.api.RequestMovie;
 import com.example.cinemaapp2.api.RequestTVShow;
+import com.example.cinemaapp2.databinding.ActivityMainBinding;
 import com.example.cinemaapp2.models.Genre;
 import com.example.cinemaapp2.models.GenreResponse;
 import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.Person;
 import com.example.cinemaapp2.models.PersonResponse;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -29,6 +35,9 @@ import retrofit2.Retrofit;
 
 
 public class MovieDetailsActivity extends AppCompatActivity {
+    private ActivityMainBinding binding;
+
+
     Retrofit retrofit = ApiClient.getClient();
     RequestMovie movieService = retrofit.create(RequestMovie.class);
     List<Genre> allGenres = new ArrayList<>();
@@ -40,8 +49,25 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(R.layout.fragment_movie_details);
 
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_view);
+
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications)
+                .build();
+
+        // Find the NavController by locating the NavHostFragment
+        if (navHostFragment != null) {
+            NavController navController = navHostFragment.getNavController();
+
+            // Set up the ActionBar with NavController
+            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+            NavigationUI.setupWithNavController(binding.navView, navController);
+        } else {
+            Log.e("MainActivity", "NavHostFragment is null");
+        }
 
         Intent intent = getIntent();
         int movieId = intent.getIntExtra("movieId", -1);
@@ -53,6 +79,40 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         } else {
             Log.d("MOVIES", "No movie ID provided");
+        }
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setOnItemSelectedListener(item -> {
+
+            if (item.getItemId() == R.id.navigation_home) {
+                // Handle navigation to the home fragment
+                navigateToFragment(R.id.navigation_home);
+                return true;
+            } else if (item.getItemId() == R.id.navigation_dashboard) {
+                // Handle navigation to the dashboard fragment
+                navigateToFragment(R.id.navigation_dashboard);
+                return true;
+            } else if (item.getItemId() == R.id.navigation_notifications) {
+                // Handle navigation to the notifications fragment
+                navigateToFragment(R.id.navigation_notifications);
+                return true;
+            } else if(item.getItemId() == R.id.navigation_search){
+                navigateToFragment(R.id.navigation_search);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void navigateToFragment(int destinationId) {
+        // Find the NavController by locating the NavHostFragment
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
+
+
+        if (navHostFragment != null) {
+            NavController navController = navHostFragment.getNavController();
+            navController.navigate(destinationId);
+        } else {
+            Log.e("MainActivity", "NavHostFragment is null");
         }
     }
 
@@ -188,6 +248,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 Log.d("MOVIEDETAILSACTIVITY", "Could not retrieve cast");
             }
         });
+
+
+
 
 
 
