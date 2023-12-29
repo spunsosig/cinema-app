@@ -32,7 +32,7 @@
                 android:layout_width="363dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="128dp"
                 android:fontFamily="@font/roboto_medium"
                 android:maxHeight="100dp"
                 android:paddingBottom="10dp"
@@ -63,11 +63,13 @@
                 app:layout_constraintStart_toEndOf="@+id/imagePoster"
                 app:layout_constraintTop_toBottomOf="@+id/textTitle" />
 
+
             <TextView
                 android:id="@+id/textRelease"
                 android:layout_width="155dp"
                 android:layout_height="51dp"
                 android:layout_marginStart="28dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Release Date:"
                 android:textSize="20sp"
@@ -79,12 +81,12 @@
                 android:layout_width="155dp"
                 android:layout_height="66dp"
                 android:layout_marginStart="28dp"
+                android:layout_marginTop="24dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Genres:"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/imagePoster"
                 app:layout_constraintTop_toBottomOf="@+id/textRelease" />
-
 
             <TextView
                 android:id="@+id/textView2"
@@ -234,13 +236,12 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="28dp"
-                android:layout_height="27dp"
-                android:layout_marginStart="8dp"
+                android:layout_width="23dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="20dp"
                 android:src="@drawable/baseline_star_24"
                 app:layout_constraintBottom_toTopOf="@+id/textRelease"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.38"
                 app:layout_constraintStart_toEndOf="@+id/textVote" />
 
 
@@ -252,10 +253,14 @@
         android:id="@+id/nav_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:itemIconTint="@color/white"
+        app:itemRippleColor="#FBFBFB"
+        app:itemTextColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        tools:layout_editor_absoluteX="0dp" />
+        app:menu="@menu/bottom_nav_menu" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

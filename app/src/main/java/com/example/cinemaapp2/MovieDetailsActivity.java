@@ -3,9 +3,13 @@ package com.example.cinemaapp2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -28,6 +32,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import connectwithsql.AddActivity;
+import connectwithsql.DBHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,27 +53,18 @@ public class MovieDetailsActivity extends AppCompatActivity {
     List<Person> cast = new ArrayList<>();
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.example_menu, menu);
+        return true;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(R.layout.fragment_movie_details);
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_view);
-
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications)
-                .build();
-
-        // Find the NavController by locating the NavHostFragment
-        if (navHostFragment != null) {
-            NavController navController = navHostFragment.getNavController();
-
-            // Set up the ActionBar with NavController
-            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-            NavigationUI.setupWithNavController(binding.navView, navController);
-        } else {
-            Log.e("MainActivity", "NavHostFragment is null");
-        }
 
         Intent intent = getIntent();
         int movieId = intent.getIntExtra("movieId", -1);
@@ -80,42 +77,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
         } else {
             Log.d("MOVIES", "No movie ID provided");
         }
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        navView.setOnItemSelectedListener(item -> {
 
-            if (item.getItemId() == R.id.navigation_home) {
-                // Handle navigation to the home fragment
-                navigateToFragment(R.id.navigation_home);
-                return true;
-            } else if (item.getItemId() == R.id.navigation_dashboard) {
-                // Handle navigation to the dashboard fragment
-                navigateToFragment(R.id.navigation_dashboard);
-                return true;
-            } else if (item.getItemId() == R.id.navigation_notifications) {
-                // Handle navigation to the notifications fragment
-                navigateToFragment(R.id.navigation_notifications);
-                return true;
-            } else if(item.getItemId() == R.id.navigation_search){
-                navigateToFragment(R.id.navigation_search);
-                return true;
-            }
-            return false;
-        });
+        setupBottomNavigationView();
+
     }
-
-    private void navigateToFragment(int destinationId) {
-        // Find the NavController by locating the NavHostFragment
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
-
-
-        if (navHostFragment != null) {
-            NavController navController = navHostFragment.getNavController();
-            navController.navigate(destinationId);
-        } else {
-            Log.e("MainActivity", "NavHostFragment is null");
-        }
-    }
-
     private void fetchMovieDetails(int movieId) {
         Retrofit retrofit = ApiClient.getClient();
         RequestMovie movieService = retrofit.create(RequestMovie.class);
@@ -213,15 +178,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 cast = personResponse.getCast();
                 Log.d("MOVIEDETAILSACTIVITY", "ACTORS" + cast.toString());
 
-//                if (cast != null) {
-//                    for (Person person : cast) {
-//                        Log.d("Actor", person.getName());
-//                    }
-//                } else {
-//                    Log.d("MOVIEDETAILSACTIVITY", "ACTOR LIST NULL");
-//                }
-
-
                 TextView actorName1 = findViewById(R.id.actorName1);
                 actorName1.setText(cast.get(0).getName());
                 TextView actorName2 = findViewById(R.id.actorName2);
@@ -248,13 +204,82 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 Log.d("MOVIEDETAILSACTIVITY", "Could not retrieve cast");
             }
         });
+    }
 
-
-
-
-
+    private void setupBottomNavigationView() {
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setOnItemSelectedListener(item -> {
+            Log.d("NavigationItemSelected", "Item ID: " + item.getItemId()); // Log the selected item ID
+            if (item.getItemId() == R.id.navigation_home) {
+                navigateToFragment(R.id.navigation_home);
+                return true;
+            } else if (item.getItemId() == R.id.navigation_dashboard) {
+                navigateToFragment(R.id.navigation_dashboard);
+                return true;
+            } else if (item.getItemId() == R.id.navigation_notifications) {
+                navigateToFragment(R.id.navigation_notifications);
+                return true;
+            } else if(item.getItemId() == R.id.navigation_search){
+                navigateToFragment(R.id.navigation_search);
+                return true;
+            }
+            return false;
+        });
 
     }
 
 
+
+    private void navigateToFragment(int destinationId) {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
+
+        if (navHostFragment != null) {
+            NavController navController = navHostFragment.getNavController();
+            navController.navigate(destinationId);
+            Log.d("Navigation", "navigate to " + destinationId);
+        } else {
+            Log.e("NavHostFragment", "NavHostFragment is null");
+        }
+    }
+
+
+//    private void navigateToFragment(int destinationId) {
+//        Intent intent = new Intent(this, MainActivity.class);  // Change MainActivity to your target activity
+//        intent.putExtra("destinationId", destinationId);
+//        startActivity(intent);
+//        finish();  // Optional, depends on your navigation requirements
+//    }
+
+
+//    private void navigateToFragment(int destinationId) {
+//        // Find the NavController by locating the NavHostFragment
+//        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
+//
+//        if (navHostFragment != null) {
+//            NavController navController = navHostFragment.getNavController();
+//            navController.navigate(destinationId);
+//            Log.d("Navigation", "navigate to " + destinationId);
+//        } else {
+//            Log.e("NavHostFragment", "NavHostFragment is null");
+//        }
+//    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.watchList){
+            DBHandler myDB = new DBHandler(this);
+            myDB.addBook(movie.getId(),
+                    movie.getTitle(),
+                    movie.getOverview(),
+                    movie.getReleaseDate());
+        }
+
+        if (id == R.id.watchLater){
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

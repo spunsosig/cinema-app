@@ -5,7 +5,7 @@
     tools:context=".MainActivity"
     app:itemIconTint="@drawable/bottom_navigation_selector"
     app:itemTextColor="@drawable/bottom_navigation_selector"
-
+    app:backgroundColor="@color/black"
     >
     <item
         android:id="@+id/navigation_home"
@@ -26,7 +26,6 @@
         android:actionLayout="@layout/fragment_search"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="Notifications"
-
         tools:layout="@layout/fragment_notifications" />
 
 </menu>

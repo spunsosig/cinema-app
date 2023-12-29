@@ -3,15 +3,18 @@
     <style name="Base.Theme.CinemaApp2" parent="Theme.AppCompat.DayNight.DarkActionBar">
 
         <!-- Customize your dark theme here. -->
-         <item name="colorPrimary">#183D3D</item>
+         <item name="colorPrimary">#000000</item>
         <item name ="colorSecondary">#040D12</item>
         <item name = "colorTertiary">#5C8374</item>
     </style>
 
+    <style name="navBar">
+        <item name="android:navigationBarColor">@android:color/white</item>
+    </style>
 
     <style name="button">
         <item name="android:textColor">@color/white</item>
-
+        <item name="android:color">@color/grey</item>
     </style>
 
     

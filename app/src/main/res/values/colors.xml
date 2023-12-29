@@ -3,7 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#666666</color>
-    <color name="blue">#211366</color>
+    <color name="blue">#4146DF</color>
+    <color name="color">#183D3D</color>
+
 
     <color name="buttonNormalColor">#666666</color>
     <color name="buttonPressedColor"></color>
