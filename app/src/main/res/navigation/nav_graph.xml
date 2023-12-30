@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/movieDetailsFragment2">
+    app:startDestination="@id/homeFragment"
+    >
 
     <fragment
         android:id="@+id/movieDetailsFragment2"
@@ -23,9 +24,9 @@
         tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/notificationsFragment"
-        android:name="com.example.cinemaapp2.ui.notifications.NotificationsFragment"
-        android:label="fragment_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/profileFragment"
+        android:name="com.example.cinemaapp2.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/profile"/>
 
 </navigation>

@@ -22,10 +22,10 @@
         tools:layout="@layout/fragment_search" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:actionLayout="@layout/fragment_search"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_profile"
+        android:actionLayout="@layout/fragment_profile"
+        android:icon="@drawable/baseline_person_24"
+        android:title="Profile"
+        tools:layout="@layout/fragment_profile" />
 
 </menu>

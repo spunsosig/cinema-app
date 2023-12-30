@@ -46,6 +46,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.http.Query;
+import com.example.cinemaapp2.ui.profile.ProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -68,13 +69,11 @@ public class MainActivity extends AppCompatActivity{
                 // Handle navigation to the dashboard fragment
                 navigateToFragment(R.id.navigation_dashboard);
                 return true;
-            } else if (item.getItemId() == R.id.navigation_notifications) {
-                // Handle navigation to the notifications fragment
-                navigateToFragment(R.id.navigation_notifications);
-                return true;
             } else if(item.getItemId() == R.id.navigation_search){
                 navigateToFragment(R.id.navigation_search);
                 return true;
+            } else if(item.getItemId() == R.id.navigation_profile){
+                navigateToFragment(R.id.navigation_profile);
             }
             return false;
         });
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity{
 
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications)
+                R.id.navigation_home, R.id.navigation_search, R.id.navigation_profile)
                 .build();
 
         // Find the NavController by locating the NavHostFragment
@@ -109,9 +108,9 @@ public class MainActivity extends AppCompatActivity{
         navigateToFragment(R.id.navigation_dashboard);
     }
 
-    public void goNotifications(View v) {
-        // Handle navigation to the notifications fragment
-        navigateToFragment(R.id.navigation_notifications);
+    public void goProfile(View v) {
+        // Handle navigation to the profile fragment
+        navigateToFragment(R.id.navigation_profile);
     }
 
     private void navigateToFragment(int destinationId) {
