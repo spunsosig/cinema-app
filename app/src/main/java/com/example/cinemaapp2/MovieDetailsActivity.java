@@ -13,12 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.cinemaapp2.api.ApiClient;
 import com.example.cinemaapp2.api.RequestMovie;
-import com.example.cinemaapp2.api.RequestTVShow;
 import com.example.cinemaapp2.databinding.ActivityMainBinding;
 import com.example.cinemaapp2.models.Genre;
 import com.example.cinemaapp2.models.GenreResponse;
@@ -32,7 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import connectwithsql.AddActivity;
 import connectwithsql.DBHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -270,7 +266,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.watchList){
             DBHandler myDB = new DBHandler(this);
-            myDB.addBook(movie.getId(),
+            myDB.addMovie(movie.getId(),
                     movie.getTitle(),
                     movie.getOverview(),
                     movie.getReleaseDate());
