@@ -14,16 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.cinemaapp2.BuildConfig;
-import com.example.cinemaapp2.MainActivity;
 import com.example.cinemaapp2.R;
 import com.example.cinemaapp2.api.ApiClient;
 import com.example.cinemaapp2.api.RequestMovie;
-import com.example.cinemaapp2.api.RequestTVShow;
-import com.example.cinemaapp2.databinding.FragmentHomeBinding;
 import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.MovieAdapter;
-import com.example.cinemaapp2.models.MovieResponse;
-import com.example.cinemaapp2.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 
@@ -41,12 +36,15 @@ import retrofit2.Retrofit;
 public class ProfileFragment extends Fragment {
 
     DBHandler myDB;
-    ArrayList<Integer> movieIds;
+    ArrayList<Integer> ListIds;
+    ArrayList<Integer> LaterIds;
     Movie movie;
-    ArrayList<Movie> movies;
+    ArrayList<Movie> watchLaterMovies;
+    ArrayList<Movie> watchListMovies;
     RecyclerView watchList;
     RecyclerView watchLater;
-    MovieAdapter movieAdapter;
+    MovieAdapter watchListAdapter;
+    MovieAdapter watchLaterAdapter;
     View root;
 
     public ProfileFragment() {
@@ -70,15 +68,31 @@ public class ProfileFragment extends Fragment {
         Retrofit retrofit = ApiClient.getClient();
         myDB = new DBHandler(this.getContext());
 
-        movies = new ArrayList<>();
+        watchListMovies = new ArrayList<>();
+        watchLaterMovies = new ArrayList<>();
 
         watchList = root.findViewById(R.id.watchList);
-        GridLayoutManager layoutManagerWatchList = new GridLayoutManager(this.getContext(), 5);
+        GridLayoutManager layoutManagerWatchList = new GridLayoutManager(this.getContext(), 3);
         watchList.setLayoutManager(layoutManagerWatchList);
 
+        watchLater = root.findViewById(R.id.watchLater);
+        GridLayoutManager layoutManagerWatchLater = new GridLayoutManager(this.getContext(), 3);
+        watchLater.setLayoutManager(layoutManagerWatchLater);
+
         // Set up the adapter before calling displayMovies
-        movieAdapter = new MovieAdapter(movies, this.getContext());
-        watchList.setAdapter(movieAdapter);
+        watchListAdapter = new MovieAdapter(watchListMovies, this.getContext());
+        watchList.setAdapter(watchListAdapter);
+
+        watchLaterAdapter = new MovieAdapter(watchLaterMovies, this.getContext());
+        watchLater.setAdapter(watchLaterAdapter);
+
+        watchList.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.d("Long press", "Long press activated");
+                return false;
+            }
+        });
 
         displayMovies();
 
@@ -86,24 +100,23 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
-
     public void displayMovies(){
 
-        movieIds = new ArrayList<>();
-        Cursor cursor = myDB.getAllMovieIds();
+        ListIds = new ArrayList<>();
+        Cursor cursor = myDB.getAllWatchListIds();
         if (cursor != null){
             if (cursor.getCount() == 0){
                 Toast.makeText(this.getContext(), "No data", Toast.LENGTH_SHORT).show();
             } else {
                 while (cursor.moveToNext()) {
-                    movieIds.add(cursor.getInt(0));
+                    ListIds.add(cursor.getInt(0));
                 }
             }
         }
         Retrofit retrofit = ApiClient.getClient();
         RequestMovie movieService = retrofit.create(RequestMovie.class);
 
-        for (Integer id: movieIds){
+        for (Integer id: ListIds){
             Call<Movie> call = movieService.getMovieById(id, BuildConfig.TMDB_API_KEY);
 
             call.enqueue(new Callback<Movie>() {
@@ -111,8 +124,8 @@ public class ProfileFragment extends Fragment {
                 public void onResponse(Call<Movie> call, Response<Movie> response) {
                     movie = response.body();
                     if (movie != null){
-                        movies.add(movie);
-                        movieAdapter.notifyDataSetChanged();
+                        watchListMovies.add(movie);
+                        watchListAdapter.notifyDataSetChanged();
                         Log.d("MYMOVIES", movie.getTitle());
 
                     } else {
@@ -128,8 +141,48 @@ public class ProfileFragment extends Fragment {
 
 
         }
-        movieAdapter = new MovieAdapter(movies, this.getContext());
-        watchList.setAdapter(movieAdapter);
+        watchListAdapter = new MovieAdapter(watchListMovies, this.getContext());
+        watchList.setAdapter(watchListAdapter);
 
+        LaterIds = new ArrayList<>();
+
+        LaterIds = new ArrayList<>();
+        Cursor cursor2 = myDB.getAllWatchLaterIds();
+        if (cursor2 != null){
+            if (cursor2.getCount() == 0){
+                Toast.makeText(this.getContext(), "No data", Toast.LENGTH_SHORT).show();
+            } else {
+                while (cursor2.moveToNext()) {
+                    LaterIds.add(cursor2.getInt(0));
+                }
+            }
+        }
+
+        for (Integer id: LaterIds){
+            Call<Movie> call = movieService.getMovieById(id, BuildConfig.TMDB_API_KEY);
+
+            call.enqueue(new Callback<Movie>() {
+                @Override
+                public void onResponse(Call<Movie> call, Response<Movie> response) {
+                    movie = response.body();
+                    if (movie != null){
+                        watchLaterMovies.add(movie);
+                        watchLaterAdapter.notifyDataSetChanged();
+                        Log.d("MYMOVIES", movie.getTitle());
+
+                    } else {
+                        Log.d("MOVIE", "MOVIE WITH THIS ID DOES NOT EXIST");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Movie> call, Throwable t) {
+                    Log.d("PROFILE", "API FAILURE", t);
+                }
+            });
+        }
+
+        watchLaterAdapter = new MovieAdapter(watchLaterMovies, this.getContext());
+        watchLater.setAdapter(watchLaterAdapter);
     }
 }

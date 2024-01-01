@@ -11,8 +11,15 @@
         android:title="Add Item to Watch List"
         app:showAsAction="never"></item>
 
-
     <item android:id="@+id/watchLater"
         android:title="Add movie to Watch later"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/removeFromList"
+        android:title="Remove from watch list"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/removeFromLater"
+        android:title="Remove from watch later"
         app:showAsAction="never"></item>
 </menu>

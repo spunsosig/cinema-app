@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -266,15 +267,27 @@ public class MovieDetailsActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.watchList){
             DBHandler myDB = new DBHandler(this);
-            myDB.addMovie(movie.getId(),
+            myDB.addMovieToList(movie.getId(),
                     movie.getTitle(),
                     movie.getOverview(),
                     movie.getReleaseDate());
         }
-
         if (id == R.id.watchLater){
-
+            DBHandler myDB = new DBHandler(this);
+            myDB.addMovieToLater(movie.getId(),
+                    movie.getTitle(),
+                    movie.getOverview(),
+                    movie.getReleaseDate());
         }
+        if (id == R.id.removeFromList){
+            DBHandler myDB = new DBHandler(this);
+            myDB.removeMovie("watchList", movie.getId());
+        }
+        if (id == R.id.removeFromLater){
+            DBHandler myDB = new DBHandler(this);
+            myDB.removeMovie("watchLater", movie.getId());
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
