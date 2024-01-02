@@ -1,5 +1,6 @@
 package com.example.cinemaapp2.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -86,6 +88,7 @@ public class HomeFragment extends Fragment {
         });
 
 
+
         Call<MovieResponse> popularCall = movieService.getPopularMovies(BuildConfig.TMDB_API_KEY);
         popularCall.enqueue(new Callback<MovieResponse>() {
             @Override
@@ -95,7 +98,6 @@ public class HomeFragment extends Fragment {
 
                     if (movieResponse != null && movieResponse.getMovies() != null){
                         popularMovies = movieResponse.getMovies();
-                        Log.d("Popular Movies", popularMovies.toString());
 
                         MovieAdapter movieAdapter = new MovieAdapter(popularMovies,HomeFragment.this.getContext());
                         recyclerView.setAdapter(movieAdapter);
@@ -130,7 +132,7 @@ public class HomeFragment extends Fragment {
                         MovieAdapter movieAdapter = new MovieAdapter(upcomingMovies,HomeFragment.this.getContext());
                         recyclerView.setAdapter(movieAdapter);
                     } else {
-                        Log.d("UPCOMING MOVIES", "Error: null or empty movie list");
+
                     }
                 } else {
                     Log.d("API", "Upcoming Connection unsuccessful");
@@ -152,6 +154,9 @@ public class HomeFragment extends Fragment {
                 recyclerView.setAdapter(movieAdapter);
 
                 btnUpcoming.setPressed(true);
+                Log.d("UPCOMING MOVIES", "Error: null or empty movie list");
+                Toast.makeText(getContext(), "Showing Upcoming movies", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -160,6 +165,8 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 MovieAdapter movieAdapter = new MovieAdapter(nowPlayingMovies,HomeFragment.this.getContext());
                 recyclerView.setAdapter(movieAdapter);
+                Toast.makeText(getContext(), "Showing Now playing movies", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -168,11 +175,15 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 MovieAdapter movieAdapter = new MovieAdapter(popularMovies,HomeFragment.this.getContext());
                 recyclerView.setAdapter(movieAdapter);
+                Log.d("Popular Movies", popularMovies.toString());
+                Toast.makeText(getContext(), "Showing Popular movies", Toast.LENGTH_SHORT).show();
+
             }
         });
 
         return root;
     }
+
 
     @Override
     public void onDestroyView() {

@@ -72,11 +72,11 @@ public class ProfileFragment extends Fragment {
         watchLaterMovies = new ArrayList<>();
 
         watchList = root.findViewById(R.id.watchList);
-        GridLayoutManager layoutManagerWatchList = new GridLayoutManager(this.getContext(), 3);
+        GridLayoutManager layoutManagerWatchList = new GridLayoutManager(this.getContext(), 4);
         watchList.setLayoutManager(layoutManagerWatchList);
 
         watchLater = root.findViewById(R.id.watchLater);
-        GridLayoutManager layoutManagerWatchLater = new GridLayoutManager(this.getContext(), 3);
+        GridLayoutManager layoutManagerWatchLater = new GridLayoutManager(this.getContext(), 4);
         watchLater.setLayoutManager(layoutManagerWatchLater);
 
         // Set up the adapter before calling displayMovies

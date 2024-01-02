@@ -142,6 +142,6 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + table + " WHERE " + COLUMN_MOVIE_ID + " = " + id;
         db.execSQL(query);
-        Toast.makeText(context, "Movie removed successfully", Toast.LENGTH_SHORT);
+        Toast.makeText(context, "Movie removed successfully", Toast.LENGTH_SHORT).show();
     }
 }

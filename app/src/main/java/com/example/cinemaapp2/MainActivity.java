@@ -1,52 +1,21 @@
 package com.example.cinemaapp2;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.example.cinemaapp2.api.ApiClient;
-import com.example.cinemaapp2.api.ApiService;
-import com.example.cinemaapp2.api.RequestMovie;
-import com.example.cinemaapp2.api.RequestTVShow;
 import com.example.cinemaapp2.databinding.ActivityMainBinding;
-import com.example.cinemaapp2.models.Movie;
-import com.example.cinemaapp2.models.MovieAdapter;
-import com.example.cinemaapp2.models.MovieResponse;
+import com.example.cinemaapp2.ui.Maps.MapsActivity2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.squareup.picasso.Picasso;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.Query;
-import com.example.cinemaapp2.ui.profile.ProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -96,6 +65,7 @@ public class MainActivity extends AppCompatActivity{
         } else {
             Log.e("MainActivity", "NavHostFragment is null");
         }
+
     }
 
     public void goHome(View v) {
@@ -111,6 +81,11 @@ public class MainActivity extends AppCompatActivity{
     public void goProfile(View v) {
         // Handle navigation to the profile fragment
         navigateToFragment(R.id.navigation_profile);
+    }
+
+    public void goToMap(View v){
+        Intent intent = new Intent(MainActivity.this, MapsActivity2.class);
+        startActivity(intent);
     }
 
     private void navigateToFragment(int destinationId) {
