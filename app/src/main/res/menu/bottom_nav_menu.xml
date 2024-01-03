@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
     app:itemIconTint="@drawable/bottom_navigation_selector"
-    app:itemTextColor="@drawable/bottom_navigation_selector"
-    app:backgroundColor="@color/black"
+    app:itemTextColor="@drawable/bottom_navigation_selector">
+<!--    app:backgroundColor="@color/black"-->
     >
     <item
         android:id="@+id/navigation_home"
