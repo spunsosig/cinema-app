@@ -19,8 +19,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.cinemaapp2.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -51,6 +53,8 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     private FusedLocationProviderClient fusedLocationClient;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    LatLng selectedLatLng;
+
     AutocompleteSupportFragment autocompleteFragment;
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
@@ -108,6 +112,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         Places.initialize(this, MAPS_API_KEY);
 
         init();
+
     }
 
     public void init(){
@@ -116,20 +121,24 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
-                Log.i("Places", "Place: " + place.getName() + ", " + place.getId());
+                Log.i("Places", "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
+
+                // Add a marker to the selected place.
+                addMarker(place.getName(), place.getLatLng());
             }
 
             @Override
             public void onError(@NonNull Status status) {
                 // TODO: Handle the error.
                 Log.i("Places", "An error occurred: " + status);
+
             }
         });
     }
@@ -175,5 +184,16 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                         }
                     }
                 });
+    }
+
+    private void addMarker(String title, LatLng latLng) {
+        // Clear existing markers on the map.
+        mMap.clear();
+
+        // Add a new marker to the selected place.
+        mMap.addMarker(new MarkerOptions().position(latLng).title(title));
+
+        // Move the camera to the selected place.
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
     }
 }
