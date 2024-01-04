@@ -39,7 +39,9 @@
         <activity
             android:name=".ui.Maps.MapsActivity2"
             android:exported="false"
-            android:label="@string/title_activity_maps2" />
+            android:label="@string/title_activity_maps2"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".ui.Maps.MapsActivity"
             android:exported="false"
@@ -69,5 +71,6 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
 
 </manifest>

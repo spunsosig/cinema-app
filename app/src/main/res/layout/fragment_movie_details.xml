@@ -251,10 +251,11 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
+        style="@style/bottomNav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:itemIconTint="@color/white"
-        app:itemRippleColor="#FBFBFB"
+        app:labelVisibilityMode="labeled"
         app:itemTextColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

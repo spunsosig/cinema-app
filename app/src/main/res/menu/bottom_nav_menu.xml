@@ -4,28 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
     app:itemIconTint="@drawable/bottom_navigation_selector"
-    app:itemTextColor="@drawable/bottom_navigation_selector">
-<!--    app:backgroundColor="@color/black"-->
+    app:itemTextColor="@drawable/bottom_navigation_selector"
     >
+
     <item
         android:id="@+id/navigation_home"
-        android:actionLayout="@layout/fragment_home"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="Home"
+        app:showAsAction="always"
         tools:layout="@layout/fragment_home" />
 
     <item
         android:id="@+id/navigation_search"
-        android:actionLayout="@layout/fragment_search"
         android:icon="@drawable/ic_search_24dp"
         android:title="Search"
+        app:showAsAction="always"
         tools:layout="@layout/fragment_search" />
 
     <item
         android:id="@+id/navigation_profile"
-        android:actionLayout="@layout/fragment_profile"
         android:icon="@drawable/baseline_person_24"
         android:title="Profile"
+        app:showAsAction="always"
         tools:layout="@layout/fragment_profile" />
+
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/ic_map"
+        android:title="Map"
+        app:showAsAction="always"
+        tools:layout="@layout/activity_maps2"/>
 
 </menu>

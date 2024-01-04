@@ -3,9 +3,18 @@
     <style name="Base.Theme.CinemaApp2" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">#3D3B8E</item>
-        <item name="colorSecondary">@color/color2</item>
+        <item name="colorSecondary">@color/orange</item>
         <item name="colorAccent"></item>
+    </style>
 
+    <style name="background">
+        <item name="android:background">#C5C5C5</item>
+    </style>
+
+    <style name="bottomNav">
+        <item name="android:background">@color/orange</item>
+        <item name="itemTextColor">@color/white</item>
+        <item name="itemIconTint">@color/white</item>
     </style>
 
     <style name="SpinnerTheme" parent="android:Widget.Spinner">
@@ -13,8 +22,8 @@
     </style>
 
     <style name="button">
-        <item name="colorPrimary">#6883BA</item>
-
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/blue</item>
     </style>
 
     <style name="Theme.CinemaApp2" parent="Base.Theme.CinemaApp2" />

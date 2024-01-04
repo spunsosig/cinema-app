@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity{
             } else if(item.getItemId() == R.id.navigation_profile){
                 navigateToFragment(R.id.navigation_profile);
             }
+            else if (item.getItemId() == R.id.navigation_map){
+                Intent intent = new Intent(MainActivity.this, MapsActivity2.class);
+                startActivity(intent);
+            }
             return false;
         });
 

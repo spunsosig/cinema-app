@@ -6,6 +6,7 @@ import static com.google.android.gms.location.Priority.PRIORITY_BALANCED_POWER_A
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,6 +26,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.example.cinemaapp2.MainActivity;
 import com.example.cinemaapp2.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -40,19 +43,24 @@ import com.example.cinemaapp2.databinding.ActivityMaps2Binding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ActivityMaps2Binding binding;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private PlacesClient placesClient;
     LatLng selectedLatLng;
 
     AutocompleteSupportFragment autocompleteFragment;
@@ -110,12 +118,23 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         }
 
         Places.initialize(this, MAPS_API_KEY);
+        placesClient = Places.createClient(this);
 
         init();
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.baseline_arrow_back_24));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapsActivity2.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
-    public void init(){
+    public void init() {
         // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
@@ -162,6 +181,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         mMap.clear();
+
     }
 
     public void getLastLocation() {
@@ -179,6 +199,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                             LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
                             mMap.addMarker(new MarkerOptions().position(myLocation).title("You are here"));
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+                            searchForCinemas(myLocation);
                         } else {
                             Log.i("MAP", "We failed to get a last location");
                         }
@@ -195,5 +216,53 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
         // Move the camera to the selected place.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+    }
+
+//    private void searchForCinemas(LatLng location){
+//        FindCurrentPlaceRequest request = FindCurrentPlaceRequest.newInstance(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
+//
+//        placesClient.findCurrentPlace(location)
+//                .addOnSuccessListener(response -> {
+//                    for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()){
+//                        Place place = placeLikelihood.getPlace();
+//
+//                        mMap.addMarker(new MarkerOptions()
+//                                .position(place.getLatLng())
+//                                .title(place.getName()));
+//                    }
+//                })
+//                .addOnFailureListener((e -> {
+//                    Log.e("Places", "Error getting places", e);
+//                }));
+//    }
+
+    private void searchForCinemas(LatLng location) {
+        // Use Places API to search for places near the given location
+        // Set up a Places API request and handle the response
+
+        // For example, searching for places within a radius of 5000 meters
+        // You may need to perform this operation in a background thread or use async methods
+
+        FindCurrentPlaceRequest request = FindCurrentPlaceRequest.newInstance(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.TYPES));
+
+        placesClient.findCurrentPlace(request)
+                .addOnSuccessListener(response -> {
+                    for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
+                        Place place = placeLikelihood.getPlace();
+
+                        // Check if the place has the type "movie_theater"
+                        List<Place.Type> types = place.getTypes();
+                        if (types != null && types.contains(Place.Field.TYPES.name() == "movie_theater")) {
+                            // Add a marker for each cinema
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(place.getLatLng())
+                                    .title(place.getName()));
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure
+                    Log.e("Places", "Error getting places", e);
+                });
     }
 }

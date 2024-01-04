@@ -5,8 +5,8 @@
     <color name="grey">#666666</color>
     <color name="blue">#4146DF</color>
     <color name="color">#183D3D</color>
-    <color name="color2">#EA142B</color>
-
+    <color name="orange">#B1270F</color>
+    <color name="reddish">#EC2E2E</color>
 
     <color name="buttonNormalColor">#666666</color>
     <color name="buttonPressedColor"></color>
