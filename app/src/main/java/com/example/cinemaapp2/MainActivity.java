@@ -15,6 +15,8 @@ import android.view.View;
 
 import com.example.cinemaapp2.databinding.ActivityMainBinding;
 import com.example.cinemaapp2.ui.Maps.MapsActivity2;
+import com.example.cinemaapp2.ui.home.HomeFragment;
+import com.example.cinemaapp2.ui.search.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -51,8 +53,6 @@ public class MainActivity extends AppCompatActivity{
             return false;
         });
 
-
-
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_search, R.id.navigation_profile)
                 .build();
@@ -70,6 +70,14 @@ public class MainActivity extends AppCompatActivity{
             Log.e("MainActivity", "NavHostFragment is null");
         }
 
+        if (getIntent().hasExtra("FRAGMENT_TO_SHOW")) {
+            String fragmentToShow = getIntent().getStringExtra("FRAGMENT_TO_SHOW");
+            if (fragmentToShow.equals("SEARCH_FRAGMENT")) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.searchFragment, new SearchFragment())
+                        .commit();
+            }
+        }
     }
 
     public void goHome(View v) {

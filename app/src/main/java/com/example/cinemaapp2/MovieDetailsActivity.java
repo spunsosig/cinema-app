@@ -23,6 +23,7 @@ import com.example.cinemaapp2.models.GenreResponse;
 import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.Person;
 import com.example.cinemaapp2.models.PersonResponse;
+import com.example.cinemaapp2.ui.Maps.MapsActivity2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -204,9 +205,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private void setupBottomNavigationView() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnItemSelectedListener(item -> {
-            Log.d("NavigationItemSelected", "Item ID: " + item.getItemId()); // Log the selected item ID
+//            Log.d("NavigationItemSelected", "Item ID: " + item.getItemId()); // Log the selected item ID
             if (item.getItemId() == R.id.navigation_home) {
-                navigateToFragment(R.id.navigation_home);
+//                navigateToFragment(R.id.navigation_home);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 return true;
             } else if (item.getItemId() == R.id.navigation_dashboard) {
                 navigateToFragment(R.id.navigation_dashboard);
@@ -215,9 +218,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 navigateToFragment(R.id.navigation_notifications);
                 return true;
             } else if(item.getItemId() == R.id.navigation_search){
-                navigateToFragment(R.id.navigation_search);
+                Log.d("NavigationItemSelected", "Item ID: " + item.getItemId() + " " + R.id.navigation_home);
+//                navigateToFragment(R.id.navigation_search);
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("FRAGMENT_TO_SHOW", "SEARCH_FRAGMENT");
                 return true;
             }
+
             return false;
         });
 
