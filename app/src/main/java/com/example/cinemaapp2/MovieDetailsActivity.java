@@ -23,6 +23,7 @@ import com.example.cinemaapp2.models.GenreResponse;
 import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.Person;
 import com.example.cinemaapp2.models.PersonResponse;
+import com.example.cinemaapp2.ui.Maps.MapsActivity2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -119,7 +120,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
     }
 
     private void updateUI(Movie movie) {
-        // Update your UI components with the details of the fetched movie
 
         TextView titleTextView = findViewById(R.id.textTitle);
         titleTextView.setText(movie.getTitle());
@@ -193,7 +193,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 ImageView actorImage4 = findViewById(R.id.actorImage4);
                 Picasso.get().load("https://image.tmdb.org/t/p/w500" + cast.get(3).getProfile_path()).into(actorImage4);
 
-
             }
 
             @Override
@@ -206,9 +205,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private void setupBottomNavigationView() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnItemSelectedListener(item -> {
-            Log.d("NavigationItemSelected", "Item ID: " + item.getItemId()); // Log the selected item ID
+//            Log.d("NavigationItemSelected", "Item ID: " + item.getItemId()); // Log the selected item ID
             if (item.getItemId() == R.id.navigation_home) {
-                navigateToFragment(R.id.navigation_home);
+//                navigateToFragment(R.id.navigation_home);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 return true;
             } else if (item.getItemId() == R.id.navigation_dashboard) {
                 navigateToFragment(R.id.navigation_dashboard);
@@ -217,15 +218,17 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 navigateToFragment(R.id.navigation_notifications);
                 return true;
             } else if(item.getItemId() == R.id.navigation_search){
-                navigateToFragment(R.id.navigation_search);
+                Log.d("NavigationItemSelected", "Item ID: " + item.getItemId() + " " + R.id.navigation_home);
+//                navigateToFragment(R.id.navigation_search);
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("FRAGMENT_TO_SHOW", "SEARCH_FRAGMENT");
                 return true;
             }
+
             return false;
         });
 
     }
-
-
 
     private void navigateToFragment(int destinationId) {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
@@ -238,29 +241,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
             Log.e("NavHostFragment", "NavHostFragment is null");
         }
     }
-
-
-//    private void navigateToFragment(int destinationId) {
-//        Intent intent = new Intent(this, MainActivity.class);  // Change MainActivity to your target activity
-//        intent.putExtra("destinationId", destinationId);
-//        startActivity(intent);
-//        finish();  // Optional, depends on your navigation requirements
-//    }
-
-
-//    private void navigateToFragment(int destinationId) {
-//        // Find the NavController by locating the NavHostFragment
-//        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
-//
-//        if (navHostFragment != null) {
-//            NavController navController = navHostFragment.getNavController();
-//            navController.navigate(destinationId);
-//            Log.d("Navigation", "navigate to " + destinationId);
-//        } else {
-//            Log.e("NavHostFragment", "NavHostFragment is null");
-//        }
-//    }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

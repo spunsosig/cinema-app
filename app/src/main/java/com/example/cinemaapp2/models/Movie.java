@@ -17,10 +17,6 @@ public class Movie {
     @SerializedName("genre_ids")
     private int[] genre_ids;
 
-//    public int getExternal_id() {
-//        return external_id;
-//    }
-
     public int[] getGenre() {
         return genre_ids;
     }
@@ -33,7 +29,6 @@ public class Movie {
     public int getId() {
         return id;
     }
-
 
     public String getTitle() {
         return title;
@@ -50,7 +45,6 @@ public class Movie {
     public void setOverview(String overview) {
         this.overview = overview;
     }
-
 
     public String getPosterPath() {
         return posterPath;
@@ -75,5 +69,6 @@ public class Movie {
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
     }
+
 
 }

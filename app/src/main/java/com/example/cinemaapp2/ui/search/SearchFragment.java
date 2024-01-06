@@ -44,9 +44,12 @@ import retrofit2.Retrofit;
 public class SearchFragment extends Fragment {
 
     private List<Genre> genres;
+    Genre genre;
+    private Spinner genreView;
     private FragmentSearchBinding binding;
     int selectedGenreId = 0;
     String selectedGenreName = "All";
+    Genre selectedGenre;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,14 +61,16 @@ public class SearchFragment extends Fragment {
         RequestMovie movieService = retrofit.create(RequestMovie.class);
         RequestTVShow TVService = retrofit.create(RequestTVShow.class);
 
+        selectedGenre = new Genre();
 
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         List<Movie> searchResults = new ArrayList<Movie>();
 
+        genreView = root.findViewById(R.id.spinner);
+
         //Movie Filters
-        Genre selectedGenre = new Genre();
 
         RecyclerView recyclerView = root.findViewById(R.id.movieSearch);
         GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
@@ -86,7 +91,6 @@ public class SearchFragment extends Fragment {
                         genreNames.add(genre.getName());
                         Log.d("GENRES", genre.getName());
                     }
-                    Spinner genreView = root.findViewById(R.id.spinner);
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(SearchFragment.this.getContext(), android.R.layout.simple_spinner_item, genreNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -98,7 +102,7 @@ public class SearchFragment extends Fragment {
                             // Handle the item selection here
                             selectedGenreName = genreView.getSelectedItem().toString();
                             if (!selectedGenreName.equals("All")) {
-                                Genre selectedGenre = genres.get(position - 1);
+                                selectedGenre = genres.get(position - 1);
                                 selectedGenreName = selectedGenre.getName();
 
                                 selectedGenreId = selectedGenre.getId();
@@ -145,6 +149,28 @@ public class SearchFragment extends Fragment {
                 String query = searchbar.getText().toString();
                 String appendToResponse = "";
                 Log.d("SUBMIT", query);
+                if(query.equals("")){
+                    Call<MovieResponse> getMoviesByGenre = movieService.getMoviesWithGenre(selectedGenre.getId(), BuildConfig.TMDB_API_KEY);
+                    getMoviesByGenre.enqueue(new Callback<MovieResponse>() {
+                        @Override
+                        public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                            MovieResponse movieResponse = response.body();
+                            assert movieResponse != null;
+                            List<Movie> movies = movieResponse.getMovies();
+                            Log.d("genreOnSubmit", String.valueOf(selectedGenreId));
+                            numOfResults.setText(movies.size() + " Results for " + selectedGenre.getName());
+                            MovieAdapter movieAdapter = new MovieAdapter(movies, SearchFragment.this.getContext());
+
+                            recyclerView.setAdapter(movieAdapter);
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<MovieResponse> call, Throwable t) {
+                            Log.d("API", "API failed to connect");
+                        }
+                    });
+                }
 
                 Call<MovieResponse> searchCall = movieService.searchMovie(query, BuildConfig.TMDB_API_KEY, appendToResponse);
                 searchCall.enqueue(new Callback<MovieResponse>() {

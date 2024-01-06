@@ -22,6 +22,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private List<Movie> movies;
     private Context context;
     private int movieId = 0;
+    private ImageView imageView;
 
 
     public MovieAdapter(List<Movie> movies, Context context) {
@@ -34,6 +35,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_movie, parent, false);
+        imageView = v.findViewById(R.id.movieImageView);
         return new ViewHolder(v);
     }
 
@@ -41,9 +43,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Movie movie = movies.get(position);
         String posterPath = movie.getPosterPath();
-
+        imageView.setImageResource(R.drawable.ic_placeholder);
         if (movie != null && posterPath != null) {
-            Picasso.get().load("https://image.tmdb.org/t/p/w500" + posterPath).into(holder.movieImageView);
+            Picasso.get().load("https://image.tmdb.org/t/p/w500" + posterPath).placeholder(R.drawable.ic_placeholder).into(holder.movieImageView);
             Log.d("posterpath",posterPath);
             movieId = movie.getId();
             Log.d("MovieIds", String.valueOf(movieId));
