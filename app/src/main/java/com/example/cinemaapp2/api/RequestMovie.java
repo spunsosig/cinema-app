@@ -56,7 +56,7 @@ public interface RequestMovie {
     //     --url 'https://api.themoviedb.org/3/discover/movie?with_genres=action' \
 
     @GET("discover/movie")
-    Call<MovieResponse> getMoviesWithGenre(@Query("with_genre") String genre, @Query("api_key") String apiKey);
+    Call<MovieResponse> getMoviesWithGenre(@Query("with_genres") int id, @Query("api_key") String apiKey);
 
     @GET("movie/{movie_id}/credits")
     Call<PersonResponse> getCast(@Path("movie_id") int movie_id, @Query("api_key") String apiKey);
