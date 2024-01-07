@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
 
                     if (movieResponse != null && movieResponse.getMovies() != null){
                         nowPlayingMovies = movieResponse.getMovies();
-                        Log.d("Now Playing: ", nowPlayingMovies.toString());
+//                        Log.d("Now Playing: ", nowPlayingMovies.toString());
                     } else {
                         Log.d("MOVIES", "Error: null or empty movie list");
 

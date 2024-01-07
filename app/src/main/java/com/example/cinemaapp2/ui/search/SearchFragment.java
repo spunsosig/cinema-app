@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -33,7 +34,10 @@ import com.example.cinemaapp2.ui.home.HomeFragment;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -191,20 +195,33 @@ public class SearchFragment extends Fragment {
                                         public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                                             if (response.isSuccessful()) {
                                                 MovieResponse movieResponse = response.body();
+                                                Log.d("movieresponse", response.body().toString());
 
                                                 if (movieResponse != null) {
                                                     List<Movie> allMovies = movieResponse.getMovies();
-                                                    List<Movie> filteredMovies = new ArrayList<Movie>();
-                                                    for (Movie movie : searchResults) {
-                                                        List<Genre> genres = movie.getGenre();
-                                                        for (Genre genre : genres) {
-                                                            if (genre.getId() == selectedGenreId) {
-                                                                filteredMovies.add(movie);
 
-                                                            }
-                                                            Log.d("Movie genre", String.valueOf(genre.getId()));
-                                                            Log.d("Target genre", String.valueOf(selectedGenreId));
+                                                    List<Movie> filteredMovies = new ArrayList<Movie>();
+
+                                                    for (Movie movie : searchResults) {
+
+                                                        int[] genreIds = movie.getGenreIds();
+
+                                                        if (movie.getGenreIds() == null){
+                                                            Log.d("movie genre ids", "fucked");
                                                         }
+
+                                                        Log.d("movie obj check", movie.toString());
+
+                                                        if (genreIds != null){
+                                                            for (int id : genreIds) {
+                                                                if (id == selectedGenreId) {
+                                                                    filteredMovies.add(movie);
+                                                                }
+                                                            }
+                                                        } else {
+                                                            Log.d("Null Genres", "Genres are null or empty for the movie: " + movie.toString());
+                                                        }
+
                                                     }
                                                     numOfResults.setText(filteredMovies.size() + " Results for " + query);
                                                     MovieAdapter movieAdapter = new MovieAdapter(filteredMovies, SearchFragment.this.getContext());
