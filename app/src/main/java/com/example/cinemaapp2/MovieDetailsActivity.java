@@ -157,8 +157,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         });
 
         if (movieGenres != null) {
+            genreView.setText("Genres: ");
             for (Genre genre : movieGenres) {
-                genreView.append(" " + genre.getName());
+                genreView.append(genre.getName() + ", ");
             }
         } else {
             Log.d("GenreIds", "null");
