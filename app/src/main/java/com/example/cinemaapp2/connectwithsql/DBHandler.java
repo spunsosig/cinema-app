@@ -1,4 +1,4 @@
-package connectwithsql;
+package com.example.cinemaapp2.connectwithsql;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -83,12 +83,12 @@ public class DBHandler extends SQLiteOpenHelper {
 
             long result = db.insert(TABLE_NAME,null, cv);
             if (result == -1){
-                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(context, "Added successfully!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Added successfully!", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(context, "Movie already exists in list", Toast.LENGTH_SHORT).show();
+ //           Toast.makeText(context, "Movie already exists in list", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -106,13 +106,13 @@ public class DBHandler extends SQLiteOpenHelper {
 
             long result = db.insert(TABLE_NAME2,null, cv);
             if (result == -1){
-                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+   //             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
             } else {
                 Log.d("DB", String.valueOf(result));
-                Toast.makeText(context, "Added successfully!", Toast.LENGTH_SHORT).show();
+     //           Toast.makeText(context, "Added successfully!", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(context, "Movie already exists in list", Toast.LENGTH_SHORT).show();
+       //     Toast.makeText(context, "Movie already exists in list", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -142,6 +142,6 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + table + " WHERE " + COLUMN_MOVIE_ID + " = " + id;
         db.execSQL(query);
-        Toast.makeText(context, "Movie removed successfully", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "Movie removed successfully", Toast.LENGTH_SHORT).show();
     }
 }

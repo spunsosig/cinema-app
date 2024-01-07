@@ -49,7 +49,7 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
         <activity
-            android:name="connectwithsql.AddActivity"
+            android:name=".connectwithsql.AddActivity"
             android:exported="false"
             android:parentActivityName=".MovieDetailsActivity" />
         <activity

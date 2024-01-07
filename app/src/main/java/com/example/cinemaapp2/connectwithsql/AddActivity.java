@@ -1,4 +1,4 @@
-package connectwithsql;
+package com.example.cinemaapp2.connectwithsql;
 
 import androidx.appcompat.app.AppCompatActivity;
 

@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +22,6 @@ import com.example.cinemaapp2.models.GenreResponse;
 import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.Person;
 import com.example.cinemaapp2.models.PersonResponse;
-import com.example.cinemaapp2.ui.Maps.MapsActivity2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -31,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import connectwithsql.DBHandler;
+import com.example.cinemaapp2.connectwithsql.DBHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -22,7 +22,7 @@ import com.example.cinemaapp2.models.MovieAdapter;
 
 import java.util.ArrayList;
 
-import connectwithsql.DBHandler;
+import com.example.cinemaapp2.connectwithsql.DBHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
