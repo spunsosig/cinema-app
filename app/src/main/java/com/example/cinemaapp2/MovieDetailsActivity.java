@@ -45,8 +45,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     Retrofit retrofit = ApiClient.getClient();
     RequestMovie movieService = retrofit.create(RequestMovie.class);
     List<Genre> allGenres = new ArrayList<>();
-    List<Genre> movieGenres = new ArrayList<>();
-    int[] movieGenreIds;
+    List<Genre> movieGenres;
     Movie movie;
     List<Person> cast = new ArrayList<>();
 
@@ -62,7 +61,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(R.layout.fragment_movie_details);
-
 
         Intent intent = getIntent();
         int movieId = intent.getIntExtra("movieId", -1);
@@ -90,7 +88,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful()) {
                     movie = response.body();
-
+                    Log.d("MovieDetailsActivity", "API Response: " + response.body());
                     if (movie != null) {
                         updateUI(movie);
 
@@ -113,7 +111,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
-                Log.e("MovieDetailsActivity", "No response");
+                Log.e("MovieDetailsActivity", "No Movie response", t);
 
             }
         });
@@ -135,8 +133,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         TextView genreView = findViewById(R.id.textGenres);
 
+        if(movie.getGenre() == null){
+            Log.d("wtf", "this is fucked");
+        }
+
         genreView.setText("");
-        movieGenreIds = movie.getGenre();
+        movieGenres = movie.getGenre();
 
         Call<GenreResponse> genreCall = movieService.getMovieGenres("en", BuildConfig.TMDB_API_KEY);
 
@@ -154,9 +156,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
             }
         });
 
-        if (movieGenreIds != null) {
-            for (int genreId : movieGenreIds) {
-                Genre genre = Genre.getGenreById(genreId, allGenres);
+        if (movieGenres != null) {
+            for (Genre genre : movieGenres) {
                 genreView.append(" " + genre.getName());
             }
         } else {

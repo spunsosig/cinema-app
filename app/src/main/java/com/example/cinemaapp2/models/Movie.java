@@ -2,6 +2,10 @@ package com.example.cinemaapp2.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Movie {
     @SerializedName("id")
     private int id;
@@ -14,16 +18,25 @@ public class Movie {
     private String releaseDate;
     @SerializedName("vote_average")
     private double voteAverage;
-    @SerializedName("genre_ids")
-    private int[] genre_ids;
+    @SerializedName("genres")
+    private List<Genre> genres;
 
-    public int[] getGenre() {
-        return genre_ids;
+    public List<Genre> getGenre() {
+        return genres;
     }
 
-    public Movie(int id, int[] genreIds){
+    public Movie(int id, List<Genre> genreIds){
 //        this.external_id = id;
-        genre_ids = genreIds;
+        this.genres = genreIds;
+    }
+
+    public Movie getMovieById(int id, ArrayList<Movie> movies){
+        for (Movie movie: movies){
+            if (id == movie.getId()){
+                return movie;
+            }
+        }
+        return null;
     }
 
     public int getId() {
@@ -34,41 +47,20 @@ public class Movie {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getOverview() {
         return overview;
-    }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
     }
 
     public String getPosterPath() {
         return posterPath;
     }
 
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
-    }
-
     public String getReleaseDate() {
         return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     public double getVoteAverage() {
         return voteAverage;
     }
-
-    public void setVoteAverage(double voteAverage) {
-        this.voteAverage = voteAverage;
-    }
-
 
 }

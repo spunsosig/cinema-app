@@ -29,7 +29,6 @@ import com.example.cinemaapp2.models.GenreResponse;
 import com.example.cinemaapp2.models.Movie;
 import com.example.cinemaapp2.models.MovieAdapter;
 import com.example.cinemaapp2.models.MovieResponse;
-import com.example.cinemaapp2.ui.dashboard.DashboardViewModel;
 import com.example.cinemaapp2.ui.home.HomeFragment;
 
 import java.sql.Array;
@@ -197,13 +196,13 @@ public class SearchFragment extends Fragment {
                                                     List<Movie> allMovies = movieResponse.getMovies();
                                                     List<Movie> filteredMovies = new ArrayList<Movie>();
                                                     for (Movie movie : searchResults) {
-                                                        int[] genreIds = movie.getGenre();
-                                                        for (int genreId : genreIds) {
-                                                            if (genreId == selectedGenreId) {
+                                                        List<Genre> genres = movie.getGenre();
+                                                        for (Genre genre : genres) {
+                                                            if (genre.getId() == selectedGenreId) {
                                                                 filteredMovies.add(movie);
 
                                                             }
-                                                            Log.d("Movie genre", String.valueOf(genreId));
+                                                            Log.d("Movie genre", String.valueOf(genre.getId()));
                                                             Log.d("Target genre", String.valueOf(selectedGenreId));
                                                         }
                                                     }

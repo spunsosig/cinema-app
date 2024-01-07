@@ -3,6 +3,9 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
+task wrapper(type: Wrapper){
+    gradleVersion = '7.2'
+}
 // app/build.gradle
 //apply from: rootProject.file("gradle/config.gradle")
 
@@ -12,6 +15,7 @@ android {
 
     buildFeatures {
         dataBinding true
+
     }
 
     defaultConfig {
@@ -31,7 +35,7 @@ android {
         }
         debug {
 //            buildConfigField "String", "TMDB_API_KEY", TMDB_API_KEY
-            buildConfigField "String", "TMDB_API_KEY", TMDB_API_KEY
+
 
         }
     }
@@ -44,6 +48,7 @@ android {
     }
 
 //    buildConfigField "String", "TMDB_API_KEY", "\"${rootProject.ext.tmdbApiKey}\""
+
 
 }
 
@@ -69,7 +74,9 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:3.3.0'
 
 
+    task prepareKotlinBuildScriptModel {
 
+    }
 
 
 }
