@@ -128,7 +128,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Picasso.get().load("https://image.tmdb.org/t/p/w500" + movie.getPosterPath()).into(posterImage);
 
         TextView voteTextView = findViewById(R.id.textVote);
-        voteTextView.setText(String.valueOf("Rating: " + movie.getVoteAverage()));
+        voteTextView.setText(String.valueOf("Rating: " + String.format("%.2g%n", movie.getVoteAverage())));
 
         TextView releaseDate = findViewById(R.id.textRelease);
         releaseDate.setText("Release: " + movie.getReleaseDate());

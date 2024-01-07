@@ -236,13 +236,12 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="23dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginBottom="20dp"
+                android:layout_width="26dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="8dp"
                 android:src="@drawable/baseline_star_24"
-                app:layout_constraintBottom_toTopOf="@+id/textRelease"
-                app:layout_constraintStart_toEndOf="@+id/textVote" />
+                app:layout_constraintStart_toEndOf="@+id/textVote"
+                app:layout_constraintTop_toTopOf="@+id/textVote" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
