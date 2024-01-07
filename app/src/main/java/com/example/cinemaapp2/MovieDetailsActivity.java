@@ -133,10 +133,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         TextView genreView = findViewById(R.id.textGenres);
 
-        if(movie.getGenre() == null){
-            Log.d("wtf", "this is fucked");
-        }
-
         genreView.setText("");
         movieGenres = movie.getGenre();
 

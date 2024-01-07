@@ -74,6 +74,9 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
         binding = ActivityMaps2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+//        setContentView(R.layout.activity_maps2);
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
