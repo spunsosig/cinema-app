@@ -74,7 +74,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
             Log.d("MOVIES", "No movie ID provided");
         }
 
-        setupBottomNavigationView();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Movie Details");
+        }
 
     }
     private void fetchMovieDetails(int movieId) {
