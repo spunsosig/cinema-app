@@ -56,13 +56,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 movieId = movie.getId();
                 Log.d("MovieIds", String.valueOf(movieId + " " + movie.getTitle()));
 
-                // Create an intent to start the MovieDetailsActivity
                 Intent intent = new Intent(context, MovieDetailsActivity.class);
 
-                // Pass data (for example, movie ID) to the MovieDetailsActivity
                 intent.putExtra("movieId", movieId);
 
-                // Start the activity
                 context.startActivity(intent);
             });
         }

@@ -74,10 +74,8 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
         binding = ActivityMaps2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        setContentView(R.layout.activity_maps2);
 
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -108,9 +106,6 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
                             }
                     );
 
-            // Before you perform the actual permission request, check whether your app
-            // already has the permissions, and whether your app needs to show a permission
-            // rationale dialog. For more details, see Request permissions.
             locationPermissionRequest.launch(new String[]{
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION
@@ -138,14 +133,11 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void init() {
-        // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-        // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
-        // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
@@ -188,15 +180,12 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void getLastLocation() {
-//         fusedLocationClient.getCurrentLocation(PRIORITY_BALANCED_POWER_ACCURACY, null);
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
 
                     @Override
                     public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            // Logic to handle location object
                             Log.i("MAP", "We got a location: (" + location.getLatitude() +
                                     ", " + location.getLongitude() + ")");
                             LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -211,13 +200,10 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
     }
 
     private void addMarker(String title, LatLng latLng) {
-        // Clear existing markers on the map.
         mMap.clear();
 
-        // Add a new marker to the selected place.
         mMap.addMarker(new MarkerOptions().position(latLng).title(title));
 
-        // Move the camera to the selected place.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
     }
 

@@ -33,11 +33,9 @@ public class MainActivity extends AppCompatActivity{
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.navigation_home) {
-                // Handle navigation to the home fragment
                 navigateToFragment(R.id.navigation_home);
                 return true;
             } else if (item.getItemId() == R.id.navigation_dashboard) {
-                // Handle navigation to the dashboard fragment
                 navigateToFragment(R.id.navigation_dashboard);
                 return true;
             } else if(item.getItemId() == R.id.navigation_search){
@@ -57,13 +55,11 @@ public class MainActivity extends AppCompatActivity{
                 R.id.navigation_home, R.id.navigation_search, R.id.navigation_profile)
                 .build();
 
-        // Find the NavController by locating the NavHostFragment
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_view);
 
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
 
-            // Set up the ActionBar with NavController
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
             NavigationUI.setupWithNavController(binding.navView, navController);
         } else {
@@ -81,17 +77,14 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void goHome(View v) {
-        // Handle navigation to the home fragment
         navigateToFragment(R.id.navigation_home);
     }
 
     public void goDashboard(View v) {
-        // Handle navigation to the dashboard fragment
         navigateToFragment(R.id.navigation_dashboard);
     }
 
     public void goProfile(View v) {
-        // Handle navigation to the profile fragment
         navigateToFragment(R.id.navigation_profile);
     }
 
@@ -101,7 +94,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void navigateToFragment(int destinationId) {
-        // Find the NavController by locating the NavHostFragment
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
 
         if (navHostFragment != null) {

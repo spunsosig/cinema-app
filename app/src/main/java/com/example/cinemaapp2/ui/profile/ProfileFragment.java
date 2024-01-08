@@ -96,7 +96,6 @@ public class ProfileFragment extends Fragment {
 
         displayMovies();
 
-        // Use the already inflated view
         return root;
     }
 

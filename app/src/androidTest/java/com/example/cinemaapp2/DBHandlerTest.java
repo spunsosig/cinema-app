@@ -21,11 +21,12 @@ public class DBHandlerTest {
 
     private DBHandler db;
     private Context context;
+    private static final String TEST_DATABASE_NAME = "TestMovie4.db";
 
     @Before
     public void setUp() {
         context = ApplicationProvider.getApplicationContext();
-        db = new DBHandler(context);
+        db = new DBHandler(context, TEST_DATABASE_NAME);
     }
 
     @Test
@@ -33,6 +34,16 @@ public class DBHandlerTest {
         db.addMovieToList(123456, "Movie Name", "This is my cool movie!", "07-01-2024");
         SQLiteDatabase dbWritable = db.getWritableDatabase();
         Cursor cursor = dbWritable.rawQuery("SELECT * FROM watchList", null);
+
+        assertEquals(1, cursor.getCount());
+        cursor.close();
+    }
+
+    @Test
+    public void testAddMovieToLater() {
+        db.addMovieToLater(123456, "Movie Name", "This is my cool movie!", "07-01-2024");
+        SQLiteDatabase dbWritable = db.getWritableDatabase();
+        Cursor cursor = dbWritable.rawQuery("SELECT * FROM watchLater", null);
 
         assertEquals(1, cursor.getCount());
         cursor.close();

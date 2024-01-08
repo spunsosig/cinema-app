@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 public class DBHandler extends SQLiteOpenHelper {
 
     private Context context;
+
     private static final String DATABASE_NAME = "Movie4.db";
     private static final int DATABASE_VERSION = 2;
 
@@ -26,6 +27,11 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public DBHandler(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+    }
+
+    public DBHandler(@Nullable Context context, String dbName) {
+        super(context, dbName, null, DATABASE_VERSION);
         this.context = context;
     }
 
@@ -45,8 +51,8 @@ public class DBHandler extends SQLiteOpenHelper {
                         + COLUMN_TITLE + " TEXT, "
                         + COLUMN_OVERVIEW + " TEXT, "
                         + COLUMN_RELEASE_DATE + " TEXT)";
-        Log.d("SQL", "QUERY 1: "+ query);  // Add this line to log your SQL queries
-        Log.d("SQL", "QUERY 2: "+ query2);  // Add this line to log your SQL queries
+        Log.d("SQL", "QUERY 1: "+ query);
+        Log.d("SQL", "QUERY 2: "+ query2);
 
         db.execSQL(query);
         db.execSQL(query2);

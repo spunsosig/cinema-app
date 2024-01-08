@@ -25,12 +25,6 @@ public interface RequestMovie {
     @GET("movie/now_playing")
     Call<MovieResponse> getNowPlayingMovies(@Query("api_key") String apiKey);
 
-//    @GET("movie/{movie_id}/external_ids")
-//    Call<Movie> getMovieById(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
-
-//    @GET("search/movie?query={query}")
-//    Call<MovieResponse> searchMovie(@Query("query") String query, @Query("api_key") String apiKey);
-
     @GET("movie/{id}")
     Call<Movie> getMovieById(@Path("id") int id, @Query("api_key") String apiKey);
 
@@ -52,8 +46,6 @@ public interface RequestMovie {
             @Query("api_key") String apiKey,
             @Query("keyword") String appendToResponse
     );
-
-    //     --url 'https://api.themoviedb.org/3/discover/movie?with_genres=action' \
 
     @GET("discover/movie")
     Call<MovieResponse> getMoviesWithGenre(@Query("with_genres") int id, @Query("api_key") String apiKey);
